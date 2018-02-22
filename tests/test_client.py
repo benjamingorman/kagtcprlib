@@ -10,8 +10,9 @@ class TestClient(unittest.TestCase):
 
     def test_parse_request(self):    
         req = self.client._parse_request("00:00:00", self.example_req)
+        self.assertEqual(req.client_name, self.client.name)
         self.assertEqual(req.timestamp, "00:00:00")
-        self.assertEqual(req.reqID, "1")
+        self.assertEqual(req.req_id, "1")
         self.assertEqual(req.method, "ping")
         self.assertEqual(req.params["foo"], "bar")
 
