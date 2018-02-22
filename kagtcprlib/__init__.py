@@ -37,9 +37,11 @@ class Client:
         self.rcon_password = rcon_password
         self.log = None
         self._handlers = []
+        self._in_multiline = False
+        self._multiline_timestamp = None
+        self._multiline_content = []
 
         self._setup_logging(log_directory)
-
         self.log.debug("Created client %s, %s:%s", name, host, port)
 
     def _setup_logging(self, log_directory):
@@ -145,7 +147,22 @@ class Client:
         content = match.group(2).strip()
         self.log.debug("Received (%s, \"%s\")", timestamp, content)
 
-        if re.match("^<request>.*</request>$", content):
+        if re.match("^<multiline>$", content):
+            self.log.debug("Entered multiline")
+            self._in_multiline = True
+            self._multiline_timestamp = timestamp
+            self._multiline_content = []
+        elif re.match("^</multiline>$", content):
+            if not self._in_multiline:
+                self.log.error("Got closing multiline tag whilst not in a multiline block!")
+            self.log.debug("Exited multiline")
+            self._in_multiline = False
+            timestamp = self._multiline_timestamp
+            content = "".join(self._multiline_content)
+            return self._handle_line("[{}] {}".format(timestamp, content))
+        elif self._in_multiline:
+            self._multiline_content.append(content)
+        elif re.match("^<request>.*</request>$", content):
             req = self._parse_request(timestamp, content)
             if req:
                 self.log.debug("parsed request")
