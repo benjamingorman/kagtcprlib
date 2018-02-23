@@ -1,5 +1,6 @@
 """TODO: Module docs here"""
 import logging
+import logging.handlers
 import os
 import re
 import socket
@@ -59,7 +60,7 @@ class Client:
 
         if log_directory:
             log_file = os.path.join(log_directory, "{}_log.txt".format(self.name))
-            fh = logging.FileHandler(log_file)
+            fh = logging.handlers.RotatingFileHandler(log_file, maxBytes=100*1000000, backupCount=5)
             fh.setLevel(logging.DEBUG)
             fh.setFormatter(logging.Formatter("[%(asctime)s]%(levelname)s: %(message)s"))
             log.addHandler(fh)
