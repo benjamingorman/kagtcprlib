@@ -106,7 +106,7 @@ class Client:
 
             self.log.info("Listening...")
             # This will loop endlessly as long as the socket is open
-            for line in sock.makefile('r'):
+            for line in sock.makefile('r', encoding='utf-8'):
                 # Detect server shutdown
                 if re.match("^\d\d:\d\d:\d\dTCPR: server shutting down", line):
                     break
