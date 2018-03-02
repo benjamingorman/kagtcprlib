@@ -37,3 +37,5 @@ Please ensure your feature branch is based on the `dev` branch and is named like
 You must run `pylint` over your code and ensure it receives at least a score of 9.
 
 ## Docs
+
+<https://benjamingorman.github.io/kagtcprlib/>
