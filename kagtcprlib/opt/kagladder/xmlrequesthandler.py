@@ -183,5 +183,5 @@ def format_angelscript_response(req_id, response, status):
     """Returns an angelscript string to send back to the mod.
     """
     lines = ["getRules().set_string('TCPR_RES{0}', '{1}');".format(req_id, response),
-             "getRules().set_u8('TCPR_REQ{0}', {2});".format(req_id, status)]
+             "getRules().set_u8('TCPR_REQ{0}', {1});".format(req_id, status)]
     return " ".join(lines)
