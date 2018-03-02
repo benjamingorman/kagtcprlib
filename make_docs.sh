@@ -1,4 +1,4 @@
-export PYTHONPATH=$(pwd)
+export PYTHONPATH="$(pwd)"
 mkdir -p docs\docs_build
 sphinx-apidoc --full --force -o docs_build/ kagtcprlib
 cp sphinx_config.py docs_build/conf.py
