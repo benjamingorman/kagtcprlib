@@ -13,8 +13,10 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import guzzle_sphinx_theme
-
+import sys
+sys.path.insert(0, os.path.abspath('./kagtcprlib'))
+sys.path.insert(0, os.path.abspath('./kagtcprlib/opt'))
+sys.path.insert(0, os.path.abspath('./kagtcprlib/opt/kagladder'))
 
 # -- Project information -----------------------------------------------------
 
@@ -23,9 +25,9 @@ copyright = '2018, Author'
 author = 'Author'
 
 # The short X.Y version
-version = '0.1'
+version = '0.2'
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -77,10 +79,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'guzzle_sphinx_theme'
-#html_theme_path = guzzle_sphinx_theme.html_theme_path()
 html_theme = 'nature'
-#html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

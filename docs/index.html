@@ -6,23 +6,22 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>kagtcprlib documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <title>kagtcprlib 0.2 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html#document-index">kagtcprlib 0.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -50,22 +49,33 @@ clients and config files.</p>
 The way to use a Client is to create one, add some handlers to it, and then
 call the client’s <cite>connect()</cite> method.
 Handlers are instances of <cite>kagtcprlib.handlers.BaseHandler</cite>.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>nickname (str): A unique nickname for the client
-host (str): The IP address of the server
-port (int): The server’s RCON port
-rcon_password (str): The RCON password for the server</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>nickname</strong> (<em>str</em>) – A unique nickname for the client</li>
+<li><strong>host</strong> (<em>str</em>) – The IP address of the server</li>
+<li><strong>port</strong> (<em>int</em>) – The server’s RCON port</li>
+<li><strong>rcon_password</strong> (<em>str</em>) – The RCON password for the server</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="kagtcprlib.client.Client.add_handler">
 <code class="descname">add_handler</code><span class="sig-paren">(</span><em>handler</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.client.Client.add_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a new handler to the client.
 Handlers may be functions or instances of a <cite>Handler</cite> class.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>handler (Handler): The handler to add</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handler</strong> (<em>Handler</em>) – The handler to add</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -85,10 +95,16 @@ Blocks until the server closes the connection.</p>
 <dt id="kagtcprlib.client.Client.connect_forever_in_thread">
 <code class="descname">connect_forever_in_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.client.Client.connect_forever_in_thread" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a daemon thread which runs the client, forever calling it’s connect method</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>threading.Thread: the thread created</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the thread created</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">threading.Thread</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -96,10 +112,14 @@ Blocks until the server closes the connection.</p>
 <code class="descname">send</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.client.Client.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a line of text (probably angelscript code) to KAG.
 If the client is not connected a <cite>NotConnectedException</cite> will be raised.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>text (str): The text to send. Newlines are added automatically.</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) – The text to send. Newlines are added automatically.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -109,28 +129,44 @@ If the client is not connected a <cite>NotConnectedException</cite> will be rais
 <code class="descclassname">kagtcprlib.client.</code><code class="descname">load_clients_from_config_file</code><span class="sig-paren">(</span><em>config_file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.client.load_clients_from_config_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a config toml file from the given path.
 Returns a list of clients created using the parameters in the config file.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>config_file_path (str): Path to the config .toml file</dd>
-<dt>Returns:</dt>
-<dd>list(Client): List of Client instances</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_file_path</strong> (<em>str</em>) – Path to the config .toml file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of Client instances</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(<a class="reference internal" href="index.html#kagtcprlib.client.Client" title="kagtcprlib.client.Client">Client</a>)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="kagtcprlib.client.run_clients">
 <code class="descclassname">kagtcprlib.client.</code><code class="descname">run_clients</code><span class="sig-paren">(</span><em>clients</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.client.run_clients" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to run all the given clients.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>clients (list(Client)): The list of clients to run</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>clients</strong> (<em>list</em><em>(</em><a class="reference internal" href="index.html#kagtcprlib.client.Client" title="kagtcprlib.client.Client"><em>Client</em></a><em>)</em>) – The list of clients to run</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
 <div class="section" id="module-kagtcprlib.constants">
 <span id="kagtcprlib-constants-module"></span><h3>kagtcprlib.constants module<a class="headerlink" href="#module-kagtcprlib.constants" title="Permalink to this headline">¶</a></h3>
 <p>Module constants contains any constant ‘magic-number’ style values.</p>
+<dl class="data">
+<dt id="kagtcprlib.constants.MAX_LINE_LENGTH">
+<code class="descclassname">kagtcprlib.constants.</code><code class="descname">MAX_LINE_LENGTH</code><em class="property"> = 15000</em><a class="headerlink" href="#kagtcprlib.constants.MAX_LINE_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max length of lines that can be sent back to KAG</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-kagtcprlib.exceptions">
 <span id="kagtcprlib-exceptions-module"></span><h3>kagtcprlib.exceptions module<a class="headerlink" href="#module-kagtcprlib.exceptions" title="Permalink to this headline">¶</a></h3>
@@ -153,24 +189,32 @@ Returns a list of clients created using the parameters in the config file.</p>
 <p>Abstract base class for handlers. Handlers are added to <a href="#id1"><span class="problematic" id="id2">`</span></a>Client`s and respond to lines
 of text received from KAG. The handler will only be called if the line matches it’s regex.
 By default all lines are matched.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>regex (str): A regular expression used to match lines from KAG</dt>
-<dd>(not including the timestamp). The line will only be handled if it matches the regex.</dd>
-</dl>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>regex</strong> (<em>str</em>) – A regular expression used to match lines from KAG
+(not including the timestamp). The line will only be handled if it matches the regex.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="kagtcprlib.handlers.BaseHandler.handle">
 <code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler.handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles a line of text received from KAG.
 If the handler returns a string it will be sent over the connection.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>timestamp (str): The timestamp of the line
-line (str): The line received from kag</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the line</li>
+<li><strong>line</strong> (<em>str</em>) – The line received from kag</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -186,21 +230,35 @@ line (str): The line received from kag</dd>
 <dd><p>Bases: <a class="reference internal" href="#kagtcprlib.handlers.BaseHandler" title="kagtcprlib.handlers.BaseHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">kagtcprlib.handlers.BaseHandler</span></code></a></p>
 <p>A handler which logs all the lines received to a file.
 Uses <cite>RotatingFileHandler</cite> internally.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>log_directory (str): Path to the directory to place log files in
-file_name (str): The name of the log file</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>log_directory</strong> (<em>str</em>) – Path to the directory to place log files in</li>
+<li><strong>file_name</strong> (<em>str</em>) – The name of the log file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="kagtcprlib.handlers.RotatingFileLoggingHandler.handle">
 <code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.handlers.RotatingFileLoggingHandler.handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles a line of text received from KAG.
 If the handler returns a string it will be sent over the connection.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>timestamp (str): The timestamp of the line
-line (str): The line received from kag</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the line</li>
+<li><strong>line</strong> (<em>str</em>) – The line received from kag</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -216,12 +274,18 @@ line (str): The line received from kag</dd>
 An example chat message is:</p>
 <blockquote>
 <div>“&lt;Joan of Arc&gt; What’s up”</div></blockquote>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>line (str): The line in question</dd>
-<dt>Returns:</dt>
-<dd>bool: Whether or not the line looks like a chat message</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>line</strong> (<em>str</em>) – The line in question</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether or not the line looks like a chat message</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -262,28 +326,20 @@ King Arthur’s Gold over a TCP RCON connection.</p>
 </ul>
 </li>
 </ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html#document-index">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2018, Author.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="nav-item nav-item-0"><a href="index.html#document-index">kagtcprlib 0.2 documentation</a> &#187;</li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Author.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.1.
+    </div>
   </body>
 </html>
