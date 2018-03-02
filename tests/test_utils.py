@@ -4,6 +4,7 @@ import re
 from .context import kagtcprlib
 import kagtcprlib.utils as utils
 
+
 class TestUtils(unittest.TestCase):
     def test_username_regex(self):
         example_username = "Eluded_1-2-3"
@@ -12,16 +13,6 @@ class TestUtils(unittest.TestCase):
         self.assertFalse(re.match(utils.USERNAME_REGEX, ""))
         self.assertTrue(re.match(utils.USERNAME_REGEX, "averyverylongusernamethatistoolong"))
 
-    def test_handle_line(self):
-        example_line = "[00:00:00] test123"
-        handler = CountingHandler()
-        self.client.add_handler(handler)
-        msgs = self.client._handle_line(example_line)
-        self.assertEqual(handler.linesHandled, 1)
-        self.assertEqual(len(msgs), 1)
-        self.assertEqual(msgs[0], "foo")
-
-        # It shouldn't handle if the regex doesn't match
-        handler.regex = "x"
-        self.client._handle_line(example_line)
-        self.assertEqual(handler.linesHandled, 1)
+    def test_looks_like_chat_msg(self):
+        self.assertTrue(utils.looks_like_chat_msg("<Joan of Arc> Hey"))
+        self.assertFalse(utils.looks_like_chat_msg("example"))

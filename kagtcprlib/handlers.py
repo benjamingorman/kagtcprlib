@@ -1,8 +1,9 @@
 """Module handlers contains some example handlers which might be added to `Client` instances.
 """
-from abc import ABC, abstractmethod, abstractproperty
+from abc import ABC, abstractmethod
 import os
 import logging
+
 
 class BaseHandler(ABC):
     """Abstract base class for handlers. Handlers are added to `Client`s and respond to lines
@@ -10,8 +11,8 @@ class BaseHandler(ABC):
     By default all lines are matched.
 
     Args:
-        regex (str): A regular expression used to match lines from KAG (not including the timestamp).
-            The line will only be handled if it matches the regex.
+        regex (str): A regular expression used to match lines from KAG
+            (not including the timestamp). The line will only be handled if it matches the regex.
     """
 
     regex = ".*"
@@ -26,6 +27,7 @@ class BaseHandler(ABC):
             line (str): The line received from kag
         """
         pass
+
 
 class RotatingFileLoggingHandler(BaseHandler):
     """A handler which logs all the lines received to a file.
@@ -43,10 +45,10 @@ class RotatingFileLoggingHandler(BaseHandler):
         log.setLevel(logging.DEBUG)
         log_file = os.path.join(log_directory, file_name)
 
-        fh = logging.handlers.RotatingFileHandler(log_file, maxBytes=100*1000000, backupCount=5)
-        fh.setLevel(logging.DEBUG)
-        fh.setFormatter(logging.Formatter("%(message)s"))
-        log.addHandler(fh)
+        rfh = logging.handlers.RotatingFileHandler(log_file, maxBytes=100*1000000, backupCount=5)
+        rfh.setLevel(logging.DEBUG)
+        rfh.setFormatter(logging.Formatter("%(message)s"))
+        log.addHandler(rfh)
 
         self._log = log
 

@@ -4,8 +4,9 @@ from .context import kagtcprlib
 import kagtcprlib.client
 import kagtcprlib.handlers as handlers
 
+
 class CountingHandler(handlers.BaseHandler):
-    regex = "test\d\d\d"
+    regex = r"test\d\d\d"
 
     def __init__(self):
         super(handlers.BaseHandler, self).__init__()
@@ -14,6 +15,7 @@ class CountingHandler(handlers.BaseHandler):
     def handle(self, timestamp, content):
         self.linesHandled += 1
         return "foo"
+
 
 class TestClient(unittest.TestCase):
     def setUp(self):

@@ -1,14 +1,13 @@
-"""Module utils contains utility functions which are re-usable throughout the project. 
+"""Module utils contains utility functions which are re-usable throughout the project.
 """
-import re
+USERNAME_REGEX = r"[a-zA-Z0-9\-_]{1,20}"
 
-USERNAME_REGEX = "[a-zA-Z0-9\-_]{1,20}"
 
 def looks_like_chat_msg(line):
     """Checks whether a line looks like it is a chat message (minus the timestamp).
     An example chat message is:
         "<Joan of Arc> What's up"
-    
+
     Args:
         line (str): The line in question
 

@@ -1,5 +1,6 @@
-"""Module client contains the `Client` class, used to create a TCPR connection to KAG.
-It also contains several useful utility functions for working with clients and config files.
+"""Module client contains the `Client` class, used to create a TCPR connection
+to KAG. It also contains several useful utility functions for working with
+clients and config files.
 """
 import logging
 import re
@@ -12,9 +13,11 @@ from . import constants
 from . import exceptions
 from . import handlers
 
+
 class Client:
     """Encapsulates a TCPR connection to a specific KAG server.
-    The way to use a Client is to create one, add some handlers to it, and then call the client's `connect()` method.
+    The way to use a Client is to create one, add some handlers to it, and then
+    call the client's `connect()` method.
     Handlers are instances of `kagtcprlib.handlers.BaseHandler`.
 
     Args:
@@ -24,7 +27,8 @@ class Client:
         rcon_password (str): The RCON password for the server
     """
 
-    def __init__(self, nickname="client", host="localhost", port=50301, rcon_password="example"):
+    def __init__(self, nickname="client", host="localhost",
+                 port=50301, rcon_password="example"):
         assert(isinstance(nickname, str))
         assert(isinstance(host, str))
         assert(isinstance(port, int))
@@ -39,7 +43,8 @@ class Client:
         self._handlers = []
 
     def connect(self):
-        """Connects to KAG and handles all TCPR lines received. Blocks until the server closes the connection.
+        """Connects to KAG and handles all TCPR lines received.
+        Blocks until the server closes the connection.
         """
         self._log.debug("Connecting...")
 
@@ -48,7 +53,8 @@ class Client:
             try:
                 sock.connect((self.host, self.port))
             except ConnectionError:
-                self._log.warning("Couldn't connect to KAG. Is the server running?")
+                self._log.warning(
+                    "Couldn't connect to KAG. Is the server running?")
                 return
 
             self._log.debug("Connected.")
@@ -63,14 +69,16 @@ class Client:
             for line in sock.makefile('r', encoding='utf-8'):
                 self._log.debug("Received: %s", line)
                 # Detect server shutdown
-                if re.match("^\d\d:\d\d:\d\dTCPR: server shutting down", line):
+                if re.match(r"^\d\d:\d\d:\d\dTCPR: server shutting down", line):
                     break
                 else:
-                    # If any handlers return text then send it over the connection
+                    # If any handlers return text then send it over the
+                    # connection
                     msgs_to_send = self._handle_line(line)
                     for msg in msgs_to_send:
                         if len(msg) > constants.MAX_LINE_LENGTH:
-                            self._log.error("Message exceeds maximum line length, not sending it.")
+                            self._log.error(
+                                "Message exceeds maximum line length, not sending it.")
                         else:
                             self.send(msg)
 
@@ -82,14 +90,14 @@ class Client:
         If the client is not connected a `NotConnectedException` will be raised.
 
         Args:
-            text (str): The text to send. Note that excess whitespace is stripped and newlines are added automatically.
+            text (str): The text to send. Newlines are added automatically.
         """
         # TODO: improve this to query the socket object if it exists to see if it's
         # actually connected.
         if not self._sock:
             raise exceptions.NotConnectedException()
 
-        text = text.strip() # remove whitespace
+        text = text.strip()  # remove whitespace
         self._sock.send("{0}\n".format(text).encode("utf-8"))
 
     def add_handler(self, handler):
@@ -107,12 +115,13 @@ class Client:
         """
         while True:
             try:
-                self.connect() # should only return if there's an error or the server shuts down
+                self.connect()  # should only return if there's an error or the server shuts down
             except KeyboardInterrupt:
                 # Handle ctrl-c gracefully
                 return
-            except Exception as e:
-                self._log.error(e, exc_info=True)
+            except Exception as err: # pylint: disable=broad-except
+                # Catch every exception cause this needs to be bullet-proof
+                self._log.error(err, exc_info=True)
             time.sleep(1)
 
     def connect_forever_in_thread(self):
@@ -121,7 +130,9 @@ class Client:
         Returns:
             threading.Thread: the thread created
         """
-        thread = threading.Thread(name=self.nickname, target=self.connect_forever)
+        thread = threading.Thread(
+            name=self.nickname,
+            target=self.connect_forever)
         thread.daemon = True
         thread.start()
         return thread
@@ -135,7 +146,7 @@ class Client:
         Returns:
             (str, str): timestamp, content
         """
-        match = re.match("^(\[\d\d:\d\d:\d\d\])(.*)$", line)
+        match = re.match(r"^(\[\d\d:\d\d:\d\d\])(.*)$", line)
         if not match:
             self._log.warning("Strangely formatted line: %s", line)
             (timestamp, content) = (None, line)
@@ -161,6 +172,7 @@ class Client:
                     msgs_to_send.append(msg)
         return msgs_to_send
 
+
 def load_clients_from_config_file(config_file_path):
     """Loads a config toml file from the given path.
     Returns a list of clients created using the parameters in the config file.
@@ -175,11 +187,15 @@ def load_clients_from_config_file(config_file_path):
 
     clients = []
     for (client_nickname, server_config) in config.items():
-        client = Client(nickname=client_nickname, host=server_config["host"], port=server_config["port"],
-                        rcon_password=server_config["rcon_password"])
+        client = Client(
+            nickname=client_nickname,
+            host=server_config["host"],
+            port=server_config["port"],
+            rcon_password=server_config["rcon_password"])
         clients.append(client)
 
     return clients
+
 
 def run_clients(clients):
     """Utility function to run all the given clients.

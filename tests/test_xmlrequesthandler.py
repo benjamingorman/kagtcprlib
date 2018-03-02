@@ -2,11 +2,12 @@ import unittest
 
 from .context import kagtcprlib
 import kagtcprlib.client
-import kagtcprlib.handlers as handlers
 import kagtcprlib.opt.kagladder as kagladder
+
 
 def ping_method_handler(req):
     return "pong"
+
 
 class TestXMLRequestHandler(unittest.TestCase):
     def setUp(self):

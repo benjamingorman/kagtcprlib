@@ -1,19 +1,22 @@
-"""Module xmlrequesthandler contains a handler class for working with the xml-style requests that KAGLadder uses.
+"""Module xmlrequesthandler contains a handler class for working with the xml-style requests
+that KAGLadder uses.
 """
 import re
 import logging
 import types
+import xml.parsers.expat
 import xmltodict
 
 from ... import handlers
 
 # These constants should be kept the same as those in the KAGLadder AngelScript TCPR library
 REQ_UNUSED = 0
-REQ_SENT = 1 
+REQ_SENT = 1
 REQ_HANDLED = 2
 REQ_FAILED = 3
 
 MULTILINE_MAX_LINES = 100
+
 
 class Request:
     """Represents a request received from KAG.
@@ -26,8 +29,8 @@ class Request:
             and how it should be handled. e.g. "getplayercoins"
         params (dict): Additional information about the request. e.g. {"username": "Eluded"}
     """
-
     def __init__(self, client_name, timestamp, req_id, method, params):
+        # pylint: disable=too-many-arguments
         assert(isinstance(client_name, str))
         assert(isinstance(timestamp, str))
         assert(isinstance(req_id, str))
@@ -41,18 +44,20 @@ class Request:
         self.params = params
 
     @staticmethod
-    def from_xml(client_name, timestamp, xml):
+    def from_xml(client_name, timestamp, req_xml):
         """Creates a new `Request` from the given XML string
 
         Args:
             client_name (str): The nickname of the `Client` that received the request
             timestamp (str): The timestamp of the request
-            xml (str): The xml string which is the serialized request
+            req_xml (str): The xml string which is the serialized request
         """
-        parsed = xmltodict.parse(xml)
+        parsed = xmltodict.parse(req_xml)
         req_dict = parsed["request"]
-        req = Request(client_name, timestamp, req_dict["id"], req_dict["method"], req_dict["params"] or {})
+        req = Request(client_name, timestamp, req_dict["id"], req_dict["method"],
+                      req_dict["params"] or {})
         return req
+
 
 class XMLRequestHandler(handlers.BaseHandler):
     """Deals with the XML-style requests which KAGLadder uses.
@@ -64,7 +69,8 @@ class XMLRequestHandler(handlers.BaseHandler):
         >>> handler = XMLRequestHandler()
         >>> handler.add_method_handler("ping", lambda req: "pong")
         >>> # Now incoming requests with a method of "ping" will be responded to with "pong"
-        >>> handler.handle("[00:00:00]", "<request><method>ping</method><id>1</id><params></params></request>")
+        >>> handler.handle("[00:00:00]",
+                "<request><method>ping</method><id>1</id><params></params></request>")
         "pong"
     """
 
@@ -77,17 +83,20 @@ class XMLRequestHandler(handlers.BaseHandler):
         self._log = logging.getLogger(name="XMLRequestHandler")
 
     def handle(self, timestamp, content):
+        """Handle incoming lines, dealing with <multiline> tags.
+        """
         # When we see an opening <multiline> tag, start recording all lines seen
-        # when the closing </multiline> comes, handle the line which is the concatenation of all recorded lines.
+        # when the closing </multiline> comes, handle the line which is the concatenation
+        # of all recorded lines.
         if re.match("^<multiline>$", content):
             self._log.debug("Entered multiline")
             self._in_multiline = True
-            self._multiline_timestamp = timestamp 
+            self._multiline_timestamp = timestamp
             self._multiline_content = []
         elif re.match("^</multiline>$", content):
             if not self._in_multiline:
                 self._log.error("Got closing multiline tag whilst not in a multiline block!")
-                return
+                return None
             self._log.debug("Exited multiline")
             self._in_multiline = False
             timestamp = self._multiline_timestamp
@@ -96,12 +105,14 @@ class XMLRequestHandler(handlers.BaseHandler):
         elif self._in_multiline:
             if len(self._multiline_content) > MULTILINE_MAX_LINES:
                 # Avoid potential memory leak due to KAG sending invalid pairs of <multiline> tags
-                self._log.warning("Excess multiline lines received. Did KAG send invalid pairs of tags?")
+                self._log.warning(
+                    "Excess multiline lines received. Did KAG send invalid pairs of tags?")
                 self._in_multiline = False
             else:
                 self._multiline_content.append(content)
         elif re.match("^<request>.*</request>$", content):
             return self._handle_line(timestamp, content)
+        return None
 
     def add_method_handler(self, method_name, method_handler):
         """Adds a handler function which responds to requests of the matching method.
@@ -128,7 +139,7 @@ class XMLRequestHandler(handlers.BaseHandler):
             response = self._handle_request(req)
             status = REQ_HANDLED
 
-            if response == None:
+            if not response:
                 response = ""
                 status = REQ_FAILED
 
@@ -136,14 +147,8 @@ class XMLRequestHandler(handlers.BaseHandler):
             response = response.replace("'", "").replace("\n", " ")
             self._log.info("Response: %s", response)
 
-            return self._format_angelscript_response(req.req_id, response, status)
-
-    def _format_angelscript_response(self, req_id, response, status):
-        """Returns an angelscript string to send back to the mod.
-        """
-        code = "getRules().set_string('TCPR_RES{0}', '{1}'); getRules().set_u8('TCPR_REQ{0}', {2});\n".format(
-                req_id, response, status)
-        return code
+            return format_angelscript_response(req.req_id, response, status)
+        return None
 
     def _parse_request(self, timestamp, content):
         """Attempts to parse a serialized request sent from KAG.
@@ -158,10 +163,10 @@ class XMLRequestHandler(handlers.BaseHandler):
             # TODO: client nickname is not passed as a parameter to `handle` yet
             # How can we get it here?
             req = Request.from_xml("TODO", timestamp, content)
-        except:
+            return req
+        except (ValueError, xml.parsers.expat.ExpatError):
             self._log.error("Invalid request xml %s", content)
-            return 
-        return req
+            return None
 
     def _handle_request(self, req):
         """Handles a received request
@@ -171,3 +176,12 @@ class XMLRequestHandler(handlers.BaseHandler):
             if method == req.method:
                 self._log.debug("Using handler %s", handler.__name__)
                 return handler(req)
+        return None
+
+
+def format_angelscript_response(req_id, response, status):
+    """Returns an angelscript string to send back to the mod.
+    """
+    lines = ["getRules().set_string('TCPR_RES{0}', '{1}');".format(req_id, response),
+             "getRules().set_u8('TCPR_REQ{0}', {2});".format(req_id, status)]
+    return " ".join(lines)
