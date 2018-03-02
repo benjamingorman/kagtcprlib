@@ -9,7 +9,7 @@ class TestUtils(unittest.TestCase):
     def test_username_regex(self):
         example_username = "Eluded_1-2-3"
         self.assertTrue(re.match(utils.USERNAME_REGEX, example_username))
-        self.assertFalse(re.match(utils.USERNAME_REGEX, "bob#"))
+        self.assertFalse(re.match(utils.USERNAME_REGEX, "*!#"))
         self.assertFalse(re.match(utils.USERNAME_REGEX, ""))
         self.assertTrue(re.match(utils.USERNAME_REGEX, "averyverylongusernamethatistoolong"))
 

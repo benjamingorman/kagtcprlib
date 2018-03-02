@@ -23,8 +23,8 @@ class TestXMLRequestHandler(unittest.TestCase):
         self.assertDictEqual(req.params, {"foo": "bar"})
 
     def test_format_angelscript_response(self):
-        expected = "getRules().set_string('TCPR_RES1', 'pong'); getRules().set_u8('TCPR_REQ1', 2);\n"
-        actual = self.handler._format_angelscript_response(1, 'pong', 2)
+        expected = "getRules().set_string('TCPR_RES1', 'pong'); getRules().set_u8('TCPR_REQ1', 2);"
+        actual = kagladder.format_angelscript_response(1, 'pong', 2)
         self.assertEqual(expected, actual)
 
     def test_handle_line(self):
@@ -33,7 +33,7 @@ class TestXMLRequestHandler(unittest.TestCase):
 
         msg = self.handler._handle_line("[00:00:00]", example_line)
 
-        self.assertEqual(msg, self.handler._format_angelscript_response(1, 'pong', 2))
+        self.assertEqual(msg, kagladder.format_angelscript_response(1, 'pong', 2))
 
     def test_multiline_handle(self):
         lines = ["<multiline>",
@@ -46,4 +46,4 @@ class TestXMLRequestHandler(unittest.TestCase):
         x = self.handler.handle("[12:34:57]", lines[1])
         self.assertIsNone(x)
         msg = self.handler.handle("[12:34:57]", lines[2])
-        self.assertEqual(msg, self.handler._format_angelscript_response(1, 'pong', 2))
+        self.assertEqual(msg, kagladder.format_angelscript_response(1, 'pong', 2))
