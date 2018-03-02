@@ -1,14 +1,22 @@
+"""This example looks for lines that looks like "ping".
+When it receives one it sends code back to KAG to make it print "pong" in chat.
+"""
+import logging
+import re
 import kagtcprlib
+from kagtcprlib.handlers import BaseHandler
 
-def ping_handler(req):
-    """Responds to a "ping" request with a "pong"
+class PingHandler(BaseHandler):
+    """Respond to 'ping' from KAG with code to print 'pong' in chat.
     """
-    return "pong"
+    def handle(self, timestamp, content):
+        if content == "ping":
+            logging.info("Got ping, sending pong.")
+            return "getNet().server_SendMsg('pong');"
 
 if __name__ == "__main__":
-    clients = kagtcprlib.load_clients_from_config_file("basic_config.toml")
+    logging.basicConfig(level=logging.INFO)
+    client = kagtcprlib.Client(nickname="playercount", host="localhost", port=50301, rcon_password="ilovetrenchrun")
 
-    for client in clients:
-        client.add_handler("ping", ping_handler)
-
-    kagtcprlib.run_clients(clients)
+    client.add_handler(PingHandler())
+    client.connect_forever()

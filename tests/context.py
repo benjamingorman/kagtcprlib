@@ -1,4 +1,7 @@
-"""This allows test code to import main project code whilst avoiding import path hell
+"""This module allows test code to import main project code whilst avoiding import path hell.
+
+Example:
+    from .context import kagtcprlib
 """
 import os
 import sys
