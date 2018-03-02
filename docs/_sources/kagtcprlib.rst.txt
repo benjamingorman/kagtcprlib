@@ -1,0 +1,54 @@
+kagtcprlib package
+==================
+
+Submodules
+----------
+
+kagtcprlib.client module
+------------------------
+
+.. automodule:: kagtcprlib.client
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kagtcprlib.constants module
+---------------------------
+
+.. automodule:: kagtcprlib.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kagtcprlib.exceptions module
+----------------------------
+
+.. automodule:: kagtcprlib.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kagtcprlib.handlers module
+--------------------------
+
+.. automodule:: kagtcprlib.handlers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+kagtcprlib.utils module
+-----------------------
+
+.. automodule:: kagtcprlib.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: kagtcprlib
+    :members:
+    :undoc-members:
+    :show-inheritance:

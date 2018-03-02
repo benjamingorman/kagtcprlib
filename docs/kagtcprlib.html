@@ -1,0 +1,299 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>kagtcprlib package &#8212; kagtcprlib  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to kagtcprlib’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="kagtcprlib-package">
+<h1>kagtcprlib package<a class="headerlink" href="#kagtcprlib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-kagtcprlib.client">
+<span id="kagtcprlib-client-module"></span><h2>kagtcprlib.client module<a class="headerlink" href="#module-kagtcprlib.client" title="Permalink to this headline">¶</a></h2>
+<p>Module client contains the <cite>Client</cite> class, used to create a TCPR connection
+to KAG. It also contains several useful utility functions for working with
+clients and config files.</p>
+<dl class="class">
+<dt id="kagtcprlib.client.Client">
+<em class="property">class </em><code class="descclassname">kagtcprlib.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>nickname='client'</em>, <em>host='localhost'</em>, <em>port=50301</em>, <em>rcon_password='example'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Encapsulates a TCPR connection to a specific KAG server.
+The way to use a Client is to create one, add some handlers to it, and then
+call the client’s <cite>connect()</cite> method.
+Handlers are instances of <cite>kagtcprlib.handlers.BaseHandler</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>nickname (str): A unique nickname for the client
+host (str): The IP address of the server
+port (int): The server’s RCON port
+rcon_password (str): The RCON password for the server</dd>
+</dl>
+<dl class="method">
+<dt id="kagtcprlib.client.Client.add_handler">
+<code class="descname">add_handler</code><span class="sig-paren">(</span><em>handler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client.add_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client.add_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new handler to the client.
+Handlers may be functions or instances of a <cite>Handler</cite> class.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>handler (Handler): The handler to add</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.client.Client.connect">
+<code class="descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to KAG and handles all TCPR lines received.
+Blocks until the server closes the connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.client.Client.connect_forever">
+<code class="descname">connect_forever</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client.connect_forever"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client.connect_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forever calls the client’s connect method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.client.Client.connect_forever_in_thread">
+<code class="descname">connect_forever_in_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client.connect_forever_in_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client.connect_forever_in_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a daemon thread which runs the client, forever calling it’s connect method</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>threading.Thread: the thread created</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.client.Client.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#Client.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.Client.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a line of text (probably angelscript code) to KAG.
+If the client is not connected a <cite>NotConnectedException</cite> will be raised.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>text (str): The text to send. Newlines are added automatically.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.client.load_clients_from_config_file">
+<code class="descclassname">kagtcprlib.client.</code><code class="descname">load_clients_from_config_file</code><span class="sig-paren">(</span><em>config_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#load_clients_from_config_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.load_clients_from_config_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a config toml file from the given path.
+Returns a list of clients created using the parameters in the config file.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>config_file_path (str): Path to the config .toml file</dd>
+<dt>Returns:</dt>
+<dd>list(Client): List of Client instances</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.client.run_clients">
+<code class="descclassname">kagtcprlib.client.</code><code class="descname">run_clients</code><span class="sig-paren">(</span><em>clients</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/client.html#run_clients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.client.run_clients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to run all the given clients.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>clients (list(Client)): The list of clients to run</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kagtcprlib.constants">
+<span id="kagtcprlib-constants-module"></span><h2>kagtcprlib.constants module<a class="headerlink" href="#module-kagtcprlib.constants" title="Permalink to this headline">¶</a></h2>
+<p>Module constants contains any constant ‘magic-number’ style values.</p>
+</div>
+<div class="section" id="module-kagtcprlib.exceptions">
+<span id="kagtcprlib-exceptions-module"></span><h2>kagtcprlib.exceptions module<a class="headerlink" href="#module-kagtcprlib.exceptions" title="Permalink to this headline">¶</a></h2>
+<p>Module exceptions contains any custom Exceptions which the library might raise.</p>
+<dl class="exception">
+<dt id="kagtcprlib.exceptions.NotConnectedException">
+<em class="property">exception </em><code class="descclassname">kagtcprlib.exceptions.</code><code class="descname">NotConnectedException</code><a class="reference internal" href="_modules/kagtcprlib/exceptions.html#NotConnectedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.exceptions.NotConnectedException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when a send is attempted on a client that isn’t connected yet.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kagtcprlib.handlers">
+<span id="kagtcprlib-handlers-module"></span><h2>kagtcprlib.handlers module<a class="headerlink" href="#module-kagtcprlib.handlers" title="Permalink to this headline">¶</a></h2>
+<p>Module handlers contains some example handlers which might be added to <cite>Client</cite> instances.</p>
+<dl class="class">
+<dt id="kagtcprlib.handlers.BaseHandler">
+<em class="property">class </em><code class="descclassname">kagtcprlib.handlers.</code><code class="descname">BaseHandler</code><a class="reference internal" href="_modules/kagtcprlib/handlers.html#BaseHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract base class for handlers. Handlers are added to <a href="#id1"><span class="problematic" id="id2">`</span></a>Client`s and respond to lines
+of text received from KAG. The handler will only be called if the line matches it’s regex.
+By default all lines are matched.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>regex (str): A regular expression used to match lines from KAG</dt>
+<dd>(not including the timestamp). The line will only be handled if it matches the regex.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="kagtcprlib.handlers.BaseHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/handlers.html#BaseHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a line of text received from KAG.
+If the handler returns a string it will be sent over the connection.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>timestamp (str): The timestamp of the line
+line (str): The line received from kag</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="kagtcprlib.handlers.BaseHandler.regex">
+<code class="descname">regex</code><em class="property"> = '.*'</em><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler.regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.handlers.RotatingFileLoggingHandler">
+<em class="property">class </em><code class="descclassname">kagtcprlib.handlers.</code><code class="descname">RotatingFileLoggingHandler</code><span class="sig-paren">(</span><em>log_directory</em>, <em>file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/handlers.html#RotatingFileLoggingHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.RotatingFileLoggingHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#kagtcprlib.handlers.BaseHandler" title="kagtcprlib.handlers.BaseHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">kagtcprlib.handlers.BaseHandler</span></code></a></p>
+<p>A handler which logs all the lines received to a file.
+Uses <cite>RotatingFileHandler</cite> internally.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>log_directory (str): Path to the directory to place log files in
+file_name (str): The name of the log file</dd>
+</dl>
+<dl class="method">
+<dt id="kagtcprlib.handlers.RotatingFileLoggingHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/handlers.html#RotatingFileLoggingHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.RotatingFileLoggingHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a line of text received from KAG.
+If the handler returns a string it will be sent over the connection.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>timestamp (str): The timestamp of the line
+line (str): The line received from kag</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-kagtcprlib.utils">
+<span id="kagtcprlib-utils-module"></span><h2>kagtcprlib.utils module<a class="headerlink" href="#module-kagtcprlib.utils" title="Permalink to this headline">¶</a></h2>
+<p>Module utils contains utility functions which are re-usable throughout the project.</p>
+<dl class="function">
+<dt id="kagtcprlib.utils.looks_like_chat_msg">
+<code class="descclassname">kagtcprlib.utils.</code><code class="descname">looks_like_chat_msg</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/utils.html#looks_like_chat_msg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.utils.looks_like_chat_msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a line looks like it is a chat message (minus the timestamp).
+An example chat message is:</p>
+<blockquote>
+<div>“&lt;Joan of Arc&gt; What’s up”</div></blockquote>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>line (str): The line in question</dd>
+<dt>Returns:</dt>
+<dd>bool: Whether or not the line looks like a chat message</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kagtcprlib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kagtcprlib" title="Permalink to this headline">¶</a></h2>
+<p>Module kagtcprlib is a module for interfacing with the game
+King Arthur’s Gold over a TCP RCON connection.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kagtcprlib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.client">kagtcprlib.client module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.constants">kagtcprlib.constants module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.exceptions">kagtcprlib.exceptions module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.handlers">kagtcprlib.handlers module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.utils">kagtcprlib.utils module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to kagtcprlib’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/kagtcprlib.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/kagtcprlib.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
