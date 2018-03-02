@@ -1,4 +1,5 @@
-# kagtcprlib
+# kagtcprlib &middot; ![AUR](https://img.shields.io/aur/license/yaourt.svg) [![Build Status](https://travis-ci.org/benjamingorman/kagtcprlib.png?branch=master)](https://travis-ci.org/benjamingorman/kagtcprlib)
+
 
 A TCPR library for King Arthur's Gold, aiming to provide a simple solution for writing interesting TCPR mods.
 
