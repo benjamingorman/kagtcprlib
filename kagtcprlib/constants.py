@@ -1,6 +1,4 @@
-REQ_UNUSED = 0
-REQ_SENT = 1 
-REQ_HANDLED = 2
-REQ_FAILED = 3
+"""Module constants contains any constant 'magic-number' style values.
+"""
 
 MAX_LINE_LENGTH = 15000

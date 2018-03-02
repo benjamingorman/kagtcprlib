@@ -1,0 +1,17 @@
+kagtcprlib.opt package
+======================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    kagtcprlib.opt.kagladder
+
+Module contents
+---------------
+
+.. automodule:: kagtcprlib.opt
+    :members:
+    :undoc-members:
+    :show-inheritance:

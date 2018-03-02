@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='kagtcprlib',
-      version='0.1',
+      version='0.2',
       description="TCPR library for King Arthur's Gold",
       author='Benjamin Gorman',
       author_email='8076bgorman@gmail.com',

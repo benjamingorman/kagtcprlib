@@ -13,8 +13,6 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-# import sys
-# sys.path.insert(0, 'C:\Users\Ben\Projects\kagtcprlib\kagtcprlib')
 import guzzle_sphinx_theme
 
 

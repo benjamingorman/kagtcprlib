@@ -1,65 +1,42 @@
 import unittest
 
 from .context import kagtcprlib
+import kagtcprlib.client
+import kagtcprlib.handlers as handlers
+
+
+class CountingHandler(handlers.BaseHandler):
+    regex = r"test\d\d\d"
+
+    def __init__(self):
+        super(handlers.BaseHandler, self).__init__()
+        self.linesHandled = 0
+
+    def handle(self, timestamp, content):
+        self.linesHandled += 1
+        return "foo"
+
 
 class TestClient(unittest.TestCase):
-
     def setUp(self):
-        self.client = kagtcprlib.Client()
-        self.example_req = "<request><id>1</id><method>ping</method><params><foo>bar</foo></params></request>"
+        self.client = kagtcprlib.client.Client()
 
-    def tearDown(self):
-        # Else we get duplicate log messages since the new client adds extra handlers
-        self.client.log.handlers = []
-
-    def test_parse_request(self):    
-        req = self.client._parse_request("00:00:00", self.example_req)
-        self.assertEqual(req.client_name, self.client.name)
-        self.assertEqual(req.timestamp, "00:00:00")
-        self.assertEqual(req.req_id, "1")
-        self.assertEqual(req.method, "ping")
-        self.assertEqual(req.params["foo"], "bar")
+    def test_split_line(self):
+        example_line = "[12:56:40] hello"
+        (timestamp, content) = self.client._split_line(example_line)
+        self.assertEqual(timestamp, "[12:56:40]")
+        self.assertEqual(content, "hello")
 
     def test_handle_line(self):
-        res = self.client._handle_line("blah")
-        self.assertEqual(res, None)
+        example_line = "[00:00:00] test123"
+        handler = CountingHandler()
+        self.client.add_handler(handler)
+        msgs = self.client._handle_line(example_line)
+        self.assertEqual(handler.linesHandled, 1)
+        self.assertEqual(len(msgs), 1)
+        self.assertEqual(msgs[0], "foo")
 
-        res = self.client._handle_line("[00:00:00] hello")
-        self.assertEqual(res, None)
-
-        res = self.client._handle_line("[00:00:00] <request></request>")
-        self.assertEqual(res, None)
-
-        # Should be None until we add a handler
-        res = self.client._handle_line("[00:00:00] {}".format(self.example_req))
-        self.assertEqual(res, "getRules().set_string('TCPR_RES1', ''); getRules().set_u8('TCPR_REQ1', 3);\n")
-
-        self.client.add_handler("ping", ping_handler)
-        res = self.client._handle_line("[00:00:00] {}".format(self.example_req))
-        self.assertEqual(res, "getRules().set_string('TCPR_RES1', 'pong'); getRules().set_u8('TCPR_REQ1', 2);\n")
-
-    def test_multiline(self):
-        self.client.add_handler("ping", ping_handler)
-
-        self.assertFalse(self.client._in_multiline)
-        self.assertEqual(self.client._multiline_timestamp, None)
-        self.assertEqual(len(self.client._multiline_content), 0)
-
-        res = self.client._handle_line("[00:00:00] <multiline>")
-        self.assertEqual(res, None)
-        self.assertTrue(self.client._in_multiline)
-        self.assertEqual(self.client._multiline_timestamp, "00:00:00")
-        self.assertEqual(len(self.client._multiline_content), 0)
-
-        self.client._handle_line("[00:00:00] {}".format(self.example_req[:10]))
-        self.client._handle_line("[00:00:00] {}".format(self.example_req[10:]))
-        res = self.client._handle_line("[00:00:00] </multiline>")
-
-        self.assertEqual(self.client._in_multiline, False)
-        self.assertEqual(res, "getRules().set_string('TCPR_RES1', 'pong'); getRules().set_u8('TCPR_REQ1', 2);\n")
-
-def ping_handler(req):
-    return "pong"
-
-if __name__ == '__main__':
-    unittest.main()
+        # It shouldn't handle if the regex doesn't match
+        handler.regex = "x"
+        self.client._handle_line(example_line)
+        self.assertEqual(handler.linesHandled, 1)
