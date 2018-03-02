@@ -8,7 +8,6 @@ A TCPR library for King Arthur's Gold, aiming to provide a simple solution for w
 
 ```python
 import logging
-import re
 import kagtcprlib
 from kagtcprlib.handlers import BaseHandler
 

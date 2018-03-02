@@ -2,7 +2,6 @@
 When it receives one it sends code back to KAG to make it print "pong" in chat.
 """
 import logging
-import re
 import kagtcprlib
 from kagtcprlib.handlers import BaseHandler
 
