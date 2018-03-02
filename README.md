@@ -4,6 +4,28 @@ A TCPR library for King Arthur's Gold, aiming to provide a simple solution for w
 
 * Supports async connections to multiple KAG servers.
 
+The basic design of the library is that the user creates a `Client` instance:
+
+```python
+client = Client(nickname="playercount", host="localhost", port=50301, rcon_password="ilovetrenchrun")
+```
+
+Then adds some handlers to it:
+
+```python
+client.add_handler(PingHandler())
+```
+
+Then calls the client's `connect` method:
+
+```python
+client.connect()
+```
+
+Whenever the client receives a line of text from KAG, all matching handlers will be run. If any handler returns some text, it will be sent back to KAG as an RCON command.
+
+What each handler does is totally up to the user. This could involve creating entries in a database, posting to a web API, or just logging to a file.
+
 ## Example
 
 ```python
@@ -27,11 +49,13 @@ if __name__ == "__main__":
     client.connect_forever()
 ```
 
+For more examples see the `examples/` folder.
+
 ## Contributing
 
 You are welcome to contribute to this project.
 
-Please ensure your feature branch is based on the `dev` branch and is named like `feature-foo-bar`.
+Please ensure your feature branch is based on the `master` branch and is named like `feature-foo-bar`.
 
 You must run `pylint` over your code and ensure it receives at least a score of 9.
 
