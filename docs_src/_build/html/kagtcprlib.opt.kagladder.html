@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kagtcprlib.opt.kagladder package &mdash; kagtcprlib  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="kagtcprlib  documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> kagtcprlib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">kagtcprlib.opt.kagladder package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.opt.kagladder.xmlrequesthandler">kagtcprlib.opt.kagladder.xmlrequesthandler module</a></li>
+<li><a class="reference internal" href="#module-kagtcprlib.opt.kagladder">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kagtcprlib</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>kagtcprlib.opt.kagladder package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/kagtcprlib.opt.kagladder.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kagtcprlib-opt-kagladder-package">
+<h1>kagtcprlib.opt.kagladder package<a class="headerlink" href="#kagtcprlib-opt-kagladder-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-kagtcprlib.opt.kagladder.xmlrequesthandler">
+<span id="kagtcprlib-opt-kagladder-xmlrequesthandler-module"></span><h2>kagtcprlib.opt.kagladder.xmlrequesthandler module<a class="headerlink" href="#module-kagtcprlib.opt.kagladder.xmlrequesthandler" title="Permalink to this headline">¶</a></h2>
+<p>Module xmlrequesthandler contains a handler class for working with the xml-style requests
+that KAGLadder uses.</p>
+<dl class="class">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.Request">
+<em class="property">class </em><code class="descclassname">kagtcprlib.opt.kagladder.xmlrequesthandler.</code><code class="descname">Request</code><span class="sig-paren">(</span><em>client_name</em>, <em>timestamp</em>, <em>req_id</em>, <em>method</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#Request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.Request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a request received from KAG.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client_name</strong> (<em>str</em>) – The nickname of the <cite>Client</cite> that received the request</li>
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the request</li>
+<li><strong>req_id</strong> (<em>str</em>) – The id of the request</li>
+<li><strong>method</strong> (<em>str</em>) – The method of the request. This identifies what type of request it is
+and how it should be handled. e.g. “getplayercoins”</li>
+<li><strong>params</strong> (<em>dict</em>) – Additional information about the request. e.g. {“username”: “Eluded”}</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.Request.from_xml">
+<em class="property">static </em><code class="descname">from_xml</code><span class="sig-paren">(</span><em>timestamp</em>, <em>req_xml</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#Request.from_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.Request.from_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new <cite>Request</cite> from the given XML string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client_name</strong> (<em>str</em>) – The nickname of the <cite>Client</cite> that received the request</li>
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the request</li>
+<li><strong>req_xml</strong> (<em>str</em>) – The xml string which is the serialized request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler">
+<em class="property">class </em><code class="descclassname">kagtcprlib.opt.kagladder.xmlrequesthandler.</code><code class="descname">XMLRequestHandler</code><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kagtcprlib.html#kagtcprlib.handlers.BaseHandler" title="kagtcprlib.handlers.BaseHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">kagtcprlib.handlers.BaseHandler</span></code></a></p>
+<p>Deals with the XML-style requests which KAGLadder uses.
+Supports requests which exceed the 16k line limit via use of &lt;multiline&gt; tags.
+Use this handler by adding ‘method handlers’ for every different request method.
+The correct method handler will be delegated to based on the <cite>method</cite> parameter in the request.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">XMLRequestHandler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span><span class="o">.</span><span class="n">add_method_handler</span><span class="p">(</span><span class="s2">&quot;ping&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">req</span><span class="p">:</span> <span class="s2">&quot;pong&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Now incoming requests with a method of &quot;ping&quot; will be responded to with &quot;pong&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="s2">&quot;[00:00:00]&quot;</span><span class="p">,</span>
+<span class="go">        &quot;&lt;request&gt;&lt;method&gt;ping&lt;/method&gt;&lt;id&gt;1&lt;/id&gt;&lt;params&gt;&lt;/params&gt;&lt;/request&gt;&quot;)</span>
+<span class="go">&quot;pong&quot;</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_cache">
+<code class="descname">_abc_cache</code><em class="property"> = &lt;_weakrefset.WeakSet object&gt;</em><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_negative_cache">
+<code class="descname">_abc_negative_cache</code><em class="property"> = &lt;_weakrefset.WeakSet object&gt;</em><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_negative_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_negative_cache_version">
+<code class="descname">_abc_negative_cache_version</code><em class="property"> = 43</em><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_negative_cache_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_registry">
+<code class="descname">_abc_registry</code><em class="property"> = &lt;_weakrefset.WeakSet object&gt;</em><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._abc_registry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_line">
+<code class="descname">_handle_line</code><span class="sig-paren">(</span><em>timestamp</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler._handle_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a received line (could be from a multi-line block)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the line</li>
+<li><strong>content</strong> (<em>str</em>) – The content of the line</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_request">
+<code class="descname">_handle_request</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler._handle_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a received request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._parse_request">
+<code class="descname">_parse_request</code><span class="sig-paren">(</span><em>timestamp</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler._parse_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._parse_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to parse a serialized request sent from KAG.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>content</strong> (<em>str</em>) – The content of the request</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The parsed request</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.Request" title="kagtcprlib.opt.kagladder.xmlrequesthandler.Request">Request</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.add_method_handler">
+<code class="descname">add_method_handler</code><span class="sig-paren">(</span><em>method_name</em>, <em>method_handler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler.add_method_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.add_method_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a handler function which responds to requests of the matching method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method_name</strong> (<em>str</em>) – The name of the method e.g. “ping”</li>
+<li><strong>method_handler</strong> (<em>types.FunctionType</em>) – A function to run on the request
+The function should return a single string as the response e.g. “pong”</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#XMLRequestHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle incoming lines, dealing with &lt;multiline&gt; tags.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.regex">
+<code class="descname">regex</code><em class="property"> = '.*'</em><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.opt.kagladder.xmlrequesthandler.format_angelscript_response">
+<code class="descclassname">kagtcprlib.opt.kagladder.xmlrequesthandler.</code><code class="descname">format_angelscript_response</code><span class="sig-paren">(</span><em>req_id</em>, <em>response</em>, <em>status</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kagtcprlib/opt/kagladder/xmlrequesthandler.html#format_angelscript_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.opt.kagladder.xmlrequesthandler.format_angelscript_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an angelscript string to send back to the mod.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kagtcprlib.opt.kagladder">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kagtcprlib.opt.kagladder" title="Permalink to this headline">¶</a></h2>
+<p>Module kagladder includes code which is specific to KAGLadder’s mode of operation,
+but may still be useful for other projects.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Author.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

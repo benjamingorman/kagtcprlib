@@ -1,10 +1,8 @@
 export PYTHONPATH="$(pwd)"
-mkdir -p docs\docs_build
-sphinx-apidoc --full --force -o docs_build/ kagtcprlib
-cp sphinx_config.py docs_build/conf.py
-cd docs_build/
-make singlehtml
-echo "Copying files output to docs/"
-cp -r _build/singlehtml/* ../docs
+mkdir -p docs
+cd docs_src
+make html
+echo "Copying output to docs/"
+cp -r _build/html/* ../docs
 touch ../docs/.nojekyll
 echo DONE
