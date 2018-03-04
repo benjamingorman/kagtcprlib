@@ -19,7 +19,7 @@
             <h2>Clients</h2>
 			<div id="clients" class="row">
 				<div v-for="client in clients_list" class="col s12 m6">
-                    <div v-bind:id="'client-' + client.nickname" class="card blue lighten-1">
+                    <div v-bind:id="'kagclient-' + client.nickname" class="kagclient card blue lighten-1">
                         <div class="card-content white-text">
                             <span class="card-title">{{ client.nickname }}</span>
                             <div class="chip blue lighten-5">
@@ -33,7 +33,13 @@
                             <div>Connected: {{ client.connected }}</div>
                             <div>Players: {{ client.player_count }}</div>
                         </div>
-                        <pre class="tcpr-console">{{ client.log.join('\n') }}</pre>
+                        <div>
+                            <pre class="tcpr-console">{{ client.log.join('\n') }}</pre>
+                        </div>
+                        <div class="tcpr-prompt">
+                            <span><pre>&gt;&gt;&gt; </pre></span>
+                                <input v-on:keydown="function(evt){tcprPromptKeypress(client.nickname, evt)}" type='text' class="browser-default"></input>
+                        </div>
                     </div>
 				</div>
 			</div>

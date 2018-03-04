@@ -32,8 +32,14 @@ class MyWebSocketServer(SimpleWebSocketServer):
 class KagClientInfoSocket(WebSocket):
 
     def handleMessage(self):
-        # echo
-        self.sendMessage(self.data)
+        logging.info("Received message %s", self.data)
+        try:
+            data = json.loads(self.data)
+        except json.decoder.JSONDecodeError:
+            logging.error("Received a message which could not be parsed")
+            return
+        msg = SocketMsg(data["message"], data["data"])
+        handle_incoming_message(msg)
 
     def handleConnected(self):
         print(self.address, "websocket connected")
@@ -83,6 +89,13 @@ def get_client_descriptions():
     return [get_client_description(client) for client in CLIENTS_LIST]
 
 
+def get_client_by_name(nickname):
+    for client in CLIENTS_LIST:
+        if client.nickname == nickname:
+            return client
+    return None
+
+
 def sync_clients():
     global CLIENTS_DESCRIPTION_HASH
     descriptions = get_client_descriptions()
@@ -101,6 +114,22 @@ def sync_clients_worker():
     while True:
         time.sleep(1)
         sync_clients()
+
+
+def handle_incoming_message(msg):
+    """Handles an incoming SocketMsg from a client
+    """
+    if msg.type == "tcpr_prompt_line":
+        client_nickname = msg.data["nickname"]
+        line = msg.data["line"]
+
+        client = get_client_by_name(client_nickname)
+        if not client:
+            logging.error("Received a 'tcpr_prompt_line' msg with an unknown client nickname")
+            return
+        else:
+            logging.info("Sending to client %s: %s", client_nickname, line)
+            client.send(line)
 
 
 if __name__ == "__main__":

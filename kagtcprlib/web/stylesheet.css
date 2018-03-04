@@ -1,9 +1,43 @@
 .tcpr-console {
+    display: flex; 
+    flex-direction: column-reverse;
+    margin: 0;
     padding: 3px;
     background: black;
     color: white;
     font-size: 0.8em;
     min-height: 50px;
     height: 300px;
-    overflow-y: scroll;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.tcpr-prompt {
+    height: auto;
+    border-top: 3px solid green;
+    padding: 3px;
+    background: black;
+    font-family: monospace;
+    color: white;
+    display: flex;
+}
+
+.tcpr-prompt span {
+    flex: 0;
+}
+
+.tcpr-prompt pre {
+    display: inline;
+    color: green;
+}
+
+.tcpr-prompt input {
+    flex: 1;
+    background: black;
+    border: none;
+}
+
+.tcpr-prompt input:focus {
+    outline: none;
 }
