@@ -11,7 +11,7 @@ class PingHandler(BaseHandler):
     """
     def handle(self, client_nickname, timestamp, content):
         if content == "ping":
-            logging.info("Got ping, sending pong.")
+            logging.info("Got ping from %s, sending pong.", client_nickname)
             return "getNet().server_SendMsg('pong');"
 
 
