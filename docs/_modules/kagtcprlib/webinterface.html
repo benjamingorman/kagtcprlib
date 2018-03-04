@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kagtcprlib.webinterface &mdash; kagtcprlib 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="kagtcprlib 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> kagtcprlib
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.client.html">kagtcprlib.client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.constants.html">kagtcprlib.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.handlers.html">kagtcprlib.handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.webinterface.html">kagtcprlib.webinterface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.opt.html">kagtcprlib.opt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">kagtcprlib</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>kagtcprlib.webinterface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for kagtcprlib.webinterface</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module webinterface provides a web interface to show the status of each</span>
+<span class="sd">KAG server connected.</span>
+<span class="sd">To run it, you must provide a config .toml file containing the details of</span>
+<span class="sd">each server you wish to connect to.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    $ python -m kagtcprlib.webinterface example_config_file.toml</span>
+
+<span class="sd">Now navigate to http://localhost:8000 and you should be able to see the interface.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">http.server</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">from</span> <span class="nn">SimpleWebSocketServer</span> <span class="k">import</span> <span class="n">SimpleWebSocketServer</span><span class="p">,</span> <span class="n">WebSocket</span>
+
+<span class="kn">from</span> <span class="nn">.client</span> <span class="k">import</span> <span class="n">load_clients_from_config_file</span>
+<span class="kn">from</span> <span class="nn">.handlers</span> <span class="k">import</span> <span class="n">BaseHandler</span><span class="p">,</span> <span class="n">PlayerCountHandler</span>
+
+<span class="n">CLIENTS_LIST</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">CLIENTS_DESCRIPTION_HASH</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># used to detect whether a re-sync needs to occur</span>
+<span class="n">WEBSOCKET_SERVER</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="MyWebSocketServer"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.MyWebSocketServer">[docs]</a><span class="k">class</span> <span class="nc">MyWebSocketServer</span><span class="p">(</span><span class="n">SimpleWebSocketServer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extension of SimpleWebSocketServer which allows for broadcasting a</span>
+<span class="sd">    SocketMsg to all connected sockets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MyWebSocketServer.broadcast"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.MyWebSocketServer.broadcast">[docs]</a>    <span class="k">def</span> <span class="nf">broadcast</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Broadcasts a SocketMsg to all connected websockets.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (SocketMsg): The message to send</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">SocketMsg</span><span class="p">))</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="o">.</span><span class="n">items</span><span class="p">():</span></div></div>
+            <span class="n">conn</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="KagClientInfoSocket"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket">[docs]</a><span class="k">class</span> <span class="nc">KagClientInfoSocket</span><span class="p">(</span><span class="n">WebSocket</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extension of WebSocket used to handle the connection to the browser.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="KagClientInfoSocket.handleMessage"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.handleMessage">[docs]</a>    <span class="k">def</span> <span class="nf">handleMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Received message </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Received a message which could not be parsed&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">SocketMsg</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span></div>
+        <span class="n">handle_incoming_message</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KagClientInfoSocket.handleConnected"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.handleConnected">[docs]</a>    <span class="k">def</span> <span class="nf">handleConnected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="s2">&quot;websocket connected&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_clients_list</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">handleClosed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="s2">&quot;websocket closed&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">send_clients_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">SocketMsg</span><span class="p">(</span><span class="s2">&quot;clients_list&quot;</span><span class="p">,</span> <span class="n">get_client_descriptions</span><span class="p">())</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="SocketMsg"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.SocketMsg">[docs]</a><span class="k">class</span> <span class="nc">SocketMsg</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A message to be sent over the WebSocket to browsers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        type (str): The type of the message.</span>
+<span class="sd">            This identifies what kind of message this is, and what the data will be.</span>
+<span class="sd">        data (any): The message&#39;s data. This could be any type which is JSON serializable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+
+<div class="viewcode-block" id="SocketMsg.json"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.SocketMsg.json">[docs]</a>    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Serializes the SocketMsg as a JSON string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The serialized SocketMsg</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">}</span></div></div>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WebSocketBroadcastHandler"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.WebSocketBroadcastHandler">[docs]</a><span class="k">class</span> <span class="nc">WebSocketBroadcastHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This handler, whenever it receives a line, will broadcast it to all</span>
+<span class="sd">    connected WebSockets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="WebSocketBroadcastHandler.handle"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.WebSocketBroadcastHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">SocketMsg</span><span class="p">(</span><span class="s2">&quot;tcpr_line&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;nickname&quot;</span><span class="p">:</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                                      <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">})</span></div></div>
+        <span class="n">WEBSOCKET_SERVER</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_client_description"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_description">[docs]</a><span class="k">def</span> <span class="nf">get_client_description</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns useful info about the given Client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (Client): The client</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: The description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nickname&quot;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">nickname</span><span class="p">,</span> <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+            <span class="s2">&quot;connected&quot;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()}</span>
+    <span class="n">pch</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_handler</span><span class="p">(</span><span class="n">PlayerCountHandler</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pch</span><span class="p">:</span>
+        <span class="n">desc</span><span class="p">[</span><span class="s2">&quot;player_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pch</span><span class="o">.</span><span class="n">player_count</span></div>
+    <span class="k">return</span> <span class="n">desc</span>
+
+
+<div class="viewcode-block" id="get_client_descriptions"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_descriptions">[docs]</a><span class="k">def</span> <span class="nf">get_client_descriptions</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the descriptions of each Client in CLIENT_LIST.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list(dict): The descriptions</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">get_client_description</span><span class="p">(</span><span class="n">client</span><span class="p">)</span> <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">CLIENTS_LIST</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_client_by_name"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_client_by_name</span><span class="p">(</span><span class="n">nickname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the client identified by `nickname` from CLIENT_LIST.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nickname (str): The nickname of the client</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">CLIENTS_LIST</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">nickname</span> <span class="o">==</span> <span class="n">nickname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">client</span></div>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="sync_clients"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.sync_clients">[docs]</a><span class="k">def</span> <span class="nf">sync_clients</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Works out whether the description of any clients has changed, and if so</span>
+<span class="sd">    broadcasts the change to all connected websockets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">CLIENTS_DESCRIPTION_HASH</span>
+    <span class="n">descriptions</span> <span class="o">=</span> <span class="n">get_client_descriptions</span><span class="p">()</span>
+    <span class="n">descriptions_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">descriptions</span><span class="p">)</span>
+    <span class="n">desc_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">descriptions_json</span><span class="p">)</span>
+
+    <span class="c1"># Hashing the descriptions allows us to know when we need to re-sync</span>
+    <span class="k">if</span> <span class="n">desc_hash</span> <span class="o">!=</span> <span class="n">CLIENTS_DESCRIPTION_HASH</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Re-syncing&quot;</span><span class="p">)</span>
+        <span class="n">CLIENTS_DESCRIPTION_HASH</span> <span class="o">=</span> <span class="n">desc_hash</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">SocketMsg</span><span class="p">(</span><span class="s2">&quot;clients_list&quot;</span><span class="p">,</span> <span class="n">descriptions</span><span class="p">)</span></div>
+        <span class="n">WEBSOCKET_SERVER</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sync_clients_worker</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sync_clients</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="handle_incoming_message"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.handle_incoming_message">[docs]</a><span class="k">def</span> <span class="nf">handle_incoming_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handles an incoming SocketMsg from a client.</span>
+<span class="sd">    This occurs for example, when a user types a line of text into the TCPR prompt</span>
+<span class="sd">    in the browser.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        msg (SocketMsg): The message received from the connection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tcpr_prompt_line&quot;</span><span class="p">:</span>
+        <span class="n">client_nickname</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;nickname&quot;</span><span class="p">]</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">get_client_by_name</span><span class="p">(</span><span class="n">client_nickname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">client</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Received a &#39;tcpr_prompt_line&#39; msg with an unknown client nickname&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sending to client </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span></div>
+            <span class="n">client</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;config_file&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the clients config file&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Which port to run on&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dev&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether to enable dev mode&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ws-port&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Which port should the WebSocket server run on&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">8001</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dev</span><span class="p">:</span>
+        <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
+
+    <span class="k">assert</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="p">))</span>
+    <span class="n">CLIENTS_LIST</span> <span class="o">=</span> <span class="n">load_clients_from_config_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">config_file</span><span class="p">)</span>
+
+    <span class="n">bch</span> <span class="o">=</span> <span class="n">WebSocketBroadcastHandler</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">CLIENTS_LIST</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">PlayerCountHandler</span><span class="p">())</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">bch</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connect_forever_in_thread</span><span class="p">()</span>
+
+    <span class="c1"># Change directory to web/ to ensure the server only serves files from there</span>
+    <span class="n">web_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;web&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">web_dir</span><span class="p">)</span>
+
+    <span class="c1"># Setup WebSocket server</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;WebSocket server serving on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">ws_port</span><span class="p">))</span>
+    <span class="n">WEBSOCKET_SERVER</span> <span class="o">=</span> <span class="n">MyWebSocketServer</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">ws_port</span><span class="p">,</span> <span class="n">KagClientInfoSocket</span><span class="p">)</span>
+    <span class="n">ws_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;websocketserver&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">WEBSOCKET_SERVER</span><span class="o">.</span><span class="n">serveforever</span><span class="p">)</span>
+    <span class="n">ws_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">ws_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Setup syncer</span>
+    <span class="n">syncer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;syncer&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">sync_clients_worker</span><span class="p">)</span>
+    <span class="n">syncer_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">syncer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;http://localhost:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+
+    <span class="c1"># Setup main http server</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;HTTP serving on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+    <span class="n">server_address</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">httpd</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">server_address</span><span class="p">,</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span><span class="p">)</span>
+    <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Benjamin Gorman.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

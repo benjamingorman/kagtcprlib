@@ -1,0 +1,36 @@
+kagtcprlib.webinterface
+=======================
+
+.. automodule:: kagtcprlib.webinterface
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_client_by_name
+      get_client_description
+      get_client_descriptions
+      handle_incoming_message
+      sync_clients
+      sync_clients_worker
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      KagClientInfoSocket
+      MyWebSocketServer
+      SocketMsg
+      WebSocketBroadcastHandler
+   
+   
+
+   
+   
+   

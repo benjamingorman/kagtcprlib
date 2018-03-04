@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/kagtcprlib.handlers.html">kagtcprlib.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/kagtcprlib.webinterface.html">kagtcprlib.webinterface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/kagtcprlib.opt.html">kagtcprlib.opt</a></li>
 </ul>
 
@@ -244,7 +245,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_multiline_content</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;XMLRequestHandler&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="XMLRequestHandler.handle"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="XMLRequestHandler.handle"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle incoming lines, dealing with &lt;multiline&gt; tags.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># When we see an opening &lt;multiline&gt; tag, start recording all lines seen</span>
@@ -263,7 +264,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_in_multiline</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiline_timestamp</span>
             <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiline_content</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_line</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_line</span><span class="p">(</span><span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_multiline</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiline_content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">MULTILINE_MAX_LINES</span><span class="p">:</span>
                 <span class="c1"># Avoid potential memory leak due to KAG sending invalid pairs of &lt;multiline&gt; tags</span>
@@ -273,7 +274,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_multiline_content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^&lt;request&gt;.*&lt;/request&gt;$&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_line</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_line</span><span class="p">(</span><span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span></div>
         <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="XMLRequestHandler.add_method_handler"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.add_method_handler">[docs]</a>    <span class="k">def</span> <span class="nf">add_method_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">method_handler</span><span class="p">):</span>
@@ -288,14 +289,15 @@
         <span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">method_handler</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">))</span></div>
         <span class="bp">self</span><span class="o">.</span><span class="n">_method_handlers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">method_name</span><span class="p">,</span> <span class="n">method_handler</span><span class="p">))</span>
 
-<div class="viewcode-block" id="XMLRequestHandler._handle_line"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_line">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="XMLRequestHandler._handle_line"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._handle_line">[docs]</a>    <span class="k">def</span> <span class="nf">_handle_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handles a received line (could be from a multi-line block)</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            client_nickname (str): The nickname of the client which received the line</span>
 <span class="sd">            timestamp (str): The timestamp of the line</span>
 <span class="sd">            content (str): The content of the line</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_request</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_request</span><span class="p">(</span><span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">req</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;parsed request&quot;</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
@@ -312,19 +314,19 @@
             <span class="k">return</span> <span class="n">format_angelscript_response</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">req_id</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span></div>
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="XMLRequestHandler._parse_request"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._parse_request">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="XMLRequestHandler._parse_request"><a class="viewcode-back" href="../../../../_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler._parse_request">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attempts to parse a serialized request sent from KAG.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            client_nickname (str): The nickname of the client which received the line</span>
+<span class="sd">            timestamp (str): The timestamp of the line</span>
 <span class="sd">            content (str): The content of the request</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Request: The parsed request</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># TODO: client nickname is not passed as a parameter to `handle` yet</span>
-            <span class="c1"># How can we get it here?</span>
-            <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="o">.</span><span class="n">from_xml</span><span class="p">(</span><span class="s2">&quot;TODO&quot;</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="o">.</span><span class="n">from_xml</span><span class="p">(</span><span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">req</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">xml</span><span class="o">.</span><span class="n">parsers</span><span class="o">.</span><span class="n">expat</span><span class="o">.</span><span class="n">ExpatError</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Invalid request xml </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span></div>

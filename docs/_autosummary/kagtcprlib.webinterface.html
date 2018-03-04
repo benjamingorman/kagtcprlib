@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kagtcprlib.webinterface &mdash; kagtcprlib 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="kagtcprlib 0.2 documentation" href="../index.html"/>
+        <link rel="next" title="kagtcprlib.opt" href="kagtcprlib.opt.html"/>
+        <link rel="prev" title="kagtcprlib.utils" href="kagtcprlib.utils.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> kagtcprlib
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.client.html">kagtcprlib.client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.constants.html">kagtcprlib.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.handlers.html">kagtcprlib.handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">kagtcprlib.webinterface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.opt.html">kagtcprlib.opt</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">kagtcprlib</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>kagtcprlib.webinterface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/_autosummary/kagtcprlib.webinterface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-kagtcprlib.webinterface">
+<span id="kagtcprlib-webinterface"></span><h1>kagtcprlib.webinterface<a class="headerlink" href="#module-kagtcprlib.webinterface" title="Permalink to this headline">¶</a></h1>
+<p>Module webinterface provides a web interface to show the status of each
+KAG server connected.
+To run it, you must provide a config .toml file containing the details of
+each server you wish to connect to.</p>
+<p class="rubric">Example</p>
+<p>$ python -m kagtcprlib.webinterface example_config_file.toml</p>
+<p>Now navigate to <a class="reference external" href="http://localhost:8000">http://localhost:8000</a> and you should be able to see the interface.</p>
+<p class="rubric">Functions</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#kagtcprlib.webinterface.get_client_by_name" title="kagtcprlib.webinterface.get_client_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_client_by_name</span></code></a>(nickname)</td>
+<td>Returns the client identified by <cite>nickname</cite> from CLIENT_LIST.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kagtcprlib.webinterface.get_client_description" title="kagtcprlib.webinterface.get_client_description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_client_description</span></code></a>(client)</td>
+<td>Returns useful info about the given Client.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kagtcprlib.webinterface.get_client_descriptions" title="kagtcprlib.webinterface.get_client_descriptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_client_descriptions</span></code></a>()</td>
+<td>Returns the descriptions of each Client in CLIENT_LIST.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kagtcprlib.webinterface.handle_incoming_message" title="kagtcprlib.webinterface.handle_incoming_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_incoming_message</span></code></a>(msg)</td>
+<td>Handles an incoming SocketMsg from a client.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kagtcprlib.webinterface.sync_clients" title="kagtcprlib.webinterface.sync_clients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync_clients</span></code></a>()</td>
+<td>Works out whether the description of any clients has changed, and if so broadcasts the change to all connected websockets.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">sync_clients_worker</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#kagtcprlib.webinterface.KagClientInfoSocket" title="kagtcprlib.webinterface.KagClientInfoSocket"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KagClientInfoSocket</span></code></a>(server,&nbsp;sock,&nbsp;address)</td>
+<td>Extension of WebSocket used to handle the connection to the browser.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kagtcprlib.webinterface.MyWebSocketServer" title="kagtcprlib.webinterface.MyWebSocketServer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MyWebSocketServer</span></code></a>(host,&nbsp;port,&nbsp;websocketclass)</td>
+<td>Extension of SimpleWebSocketServer which allows for broadcasting a SocketMsg to all connected sockets.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kagtcprlib.webinterface.SocketMsg" title="kagtcprlib.webinterface.SocketMsg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SocketMsg</span></code></a>(type,&nbsp;data)</td>
+<td>A message to be sent over the WebSocket to browsers.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kagtcprlib.webinterface.WebSocketBroadcastHandler" title="kagtcprlib.webinterface.WebSocketBroadcastHandler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WebSocketBroadcastHandler</span></code></a></td>
+<td>This handler, whenever it receives a line, will broadcast it to all connected WebSockets.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket">
+<em class="property">class </em><code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">KagClientInfoSocket</code><span class="sig-paren">(</span><em>server</em>, <em>sock</em>, <em>address</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#KagClientInfoSocket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleWebSocketServer.SimpleWebSocketServer.WebSocket</span></code></p>
+<p>Extension of WebSocket used to handle the connection to the browser.</p>
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>status=1000</em>, <em>reason=''</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send Close frame to the client. The underlying socket is only closed
+when the client acknowledges the Close frame.</p>
+<p>status is the closing identifier.
+reason is the reason for the close.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.handleClose">
+<code class="descname">handleClose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.handleClose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when a websocket server gets a Close frame from a client.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.handleConnected">
+<code class="descname">handleConnected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#KagClientInfoSocket.handleConnected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.handleConnected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when a websocket client connects to the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.handleMessage">
+<code class="descname">handleMessage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#KagClientInfoSocket.handleMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.handleMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called when websocket frame is received.
+To access the frame data call self.data.</p>
+<p>If the frame is Text then self.data is a unicode object.
+If the frame is Binary then self.data is a bytearray object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.sendFragment">
+<code class="descname">sendFragment</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.sendFragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>see sendFragmentStart()</p>
+<p>If data is a unicode object then the frame is sent as Text.
+If the data is a bytearray object then the frame is sent as Binary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentEnd">
+<code class="descname">sendFragmentEnd</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>see sendFragmentEnd()</p>
+<p>If data is a unicode object then the frame is sent as Text.
+If the data is a bytearray object then the frame is sent as Binary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentStart">
+<code class="descname">sendFragmentStart</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the start of a data fragment stream to a websocket client.
+Subsequent data should be sent using sendFragment().
+A fragment stream is completed when sendFragmentEnd() is called.</p>
+<p>If data is a unicode object then the frame is sent as Text.
+If the data is a bytearray object then the frame is sent as Binary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="kagtcprlib.webinterface.KagClientInfoSocket.sendMessage">
+<code class="descname">sendMessage</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#kagtcprlib.webinterface.KagClientInfoSocket.sendMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send websocket data frame to the client.</p>
+<p>If data is a unicode object then the frame is sent as Text.
+If the data is a bytearray object then the frame is sent as Binary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.webinterface.MyWebSocketServer">
+<em class="property">class </em><code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">MyWebSocketServer</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>websocketclass</em>, <em>selectInterval=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#MyWebSocketServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.MyWebSocketServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleWebSocketServer.SimpleWebSocketServer.SimpleWebSocketServer</span></code></p>
+<p>Extension of SimpleWebSocketServer which allows for broadcasting a
+SocketMsg to all connected sockets.</p>
+<dl class="method">
+<dt id="kagtcprlib.webinterface.MyWebSocketServer.broadcast">
+<code class="descname">broadcast</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#MyWebSocketServer.broadcast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.MyWebSocketServer.broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Broadcasts a SocketMsg to all connected websockets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msg</strong> (<a class="reference internal" href="#kagtcprlib.webinterface.SocketMsg" title="kagtcprlib.webinterface.SocketMsg"><em>SocketMsg</em></a>) – The message to send</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.webinterface.SocketMsg">
+<em class="property">class </em><code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">SocketMsg</code><span class="sig-paren">(</span><em>type</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#SocketMsg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.SocketMsg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A message to be sent over the WebSocket to browsers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<em>str</em>) – The type of the message.
+This identifies what kind of message this is, and what the data will be.</li>
+<li><strong>data</strong> (<em>any</em>) – The message’s data. This could be any type which is JSON serializable.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kagtcprlib.webinterface.SocketMsg.json">
+<code class="descname">json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#SocketMsg.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.SocketMsg.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializes the SocketMsg as a JSON string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The serialized SocketMsg</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.webinterface.WebSocketBroadcastHandler">
+<em class="property">class </em><code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">WebSocketBroadcastHandler</code><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#WebSocketBroadcastHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.WebSocketBroadcastHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kagtcprlib.handlers.html#kagtcprlib.handlers.BaseHandler" title="kagtcprlib.handlers.BaseHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">kagtcprlib.handlers.BaseHandler</span></code></a></p>
+<p>This handler, whenever it receives a line, will broadcast it to all
+connected WebSockets.</p>
+<dl class="method">
+<dt id="kagtcprlib.webinterface.WebSocketBroadcastHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>client_nickname</em>, <em>timestamp</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#WebSocketBroadcastHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.WebSocketBroadcastHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a line of text received from KAG.
+If the handler returns a string it will be sent over the connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the line</li>
+<li><strong>line</strong> (<em>str</em>) – The line received from kag</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.webinterface.get_client_by_name">
+<code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">get_client_by_name</code><span class="sig-paren">(</span><em>nickname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#get_client_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.get_client_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the client identified by <cite>nickname</cite> from CLIENT_LIST.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nickname</strong> (<em>str</em>) – The nickname of the client</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.webinterface.get_client_description">
+<code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">get_client_description</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#get_client_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.get_client_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns useful info about the given Client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="kagtcprlib.client.html#kagtcprlib.client.Client" title="kagtcprlib.client.Client"><em>Client</em></a>) – The client</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.webinterface.get_client_descriptions">
+<code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">get_client_descriptions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#get_client_descriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.get_client_descriptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the descriptions of each Client in CLIENT_LIST.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The descriptions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.webinterface.handle_incoming_message">
+<code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">handle_incoming_message</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#handle_incoming_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.handle_incoming_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles an incoming SocketMsg from a client.
+This occurs for example, when a user types a line of text into the TCPR prompt
+in the browser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msg</strong> (<a class="reference internal" href="#kagtcprlib.webinterface.SocketMsg" title="kagtcprlib.webinterface.SocketMsg"><em>SocketMsg</em></a>) – The message received from the connection.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="kagtcprlib.webinterface.sync_clients">
+<code class="descclassname">kagtcprlib.webinterface.</code><code class="descname">sync_clients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/webinterface.html#sync_clients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.webinterface.sync_clients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Works out whether the description of any clients has changed, and if so
+broadcasts the change to all connected websockets.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kagtcprlib.opt.html" class="btn btn-neutral float-right" title="kagtcprlib.opt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kagtcprlib.utils.html" class="btn btn-neutral" title="kagtcprlib.utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Benjamin Gorman.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

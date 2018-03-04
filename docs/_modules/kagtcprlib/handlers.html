@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.handlers.html">kagtcprlib.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.webinterface.html">kagtcprlib.webinterface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/kagtcprlib.opt.html">kagtcprlib.opt</a></li>
 </ul>
 
@@ -165,22 +166,18 @@
 <span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
 
 
 <div class="viewcode-block" id="BaseHandler"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.BaseHandler">[docs]</a><span class="k">class</span> <span class="nc">BaseHandler</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract base class for handlers. Handlers are added to `Client`s and respond to lines</span>
-<span class="sd">    of text received from KAG. The handler will only be called if the line matches it&#39;s regex.</span>
-<span class="sd">    By default all lines are matched.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        regex (str): A regular expression used to match lines from KAG</span>
-<span class="sd">            (not including the timestamp). The line will only be handled if it matches the regex.</span>
+<span class="sd">    of text received from KAG.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">regex</span> <span class="o">=</span> <span class="s2">&quot;.*&quot;</span>
-
 <div class="viewcode-block" id="BaseHandler.handle"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.BaseHandler.handle">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handles a line of text received from KAG.</span>
 <span class="sd">        If the handler returns a string it will be sent over the connection.</span>
 
@@ -214,8 +211,31 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">log</span>
 
-<div class="viewcode-block" id="RotatingFileLoggingHandler.handle"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.RotatingFileLoggingHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span></div></div>
+<div class="viewcode-block" id="RotatingFileLoggingHandler.handle"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.RotatingFileLoggingHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span></div></div>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PlayerCountHandler"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.PlayerCountHandler">[docs]</a><span class="k">class</span> <span class="nc">PlayerCountHandler</span><span class="p">(</span><span class="n">BaseHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Keeps a count of the number of players on a server by looking for lines like:</span>
+<span class="sd">        Joan of Arc (Eluded) is now spectating</span>
+<span class="sd">        Joan of Arc (Eluded) has joined Red Team</span>
+<span class="sd">        Player Eluded left the game (players left 0)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="PlayerCountHandler.handle"><a class="viewcode-back" href="../../_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.PlayerCountHandler.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_nickname</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^</span><span class="si">{0}</span><span class="s2"> connected as&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">USERNAME_REGEX</span><span class="p">),</span> <span class="n">content</span><span class="p">)</span>
+        <span class="n">old_player_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^Player (.*) left the game \(players left (\d+)\)&quot;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">old_player_count</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span><span class="p">:</span></div></div>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PlayerCountHandler player count changed: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_count</span><span class="p">)</span>
 </pre></div>
 
            </div>

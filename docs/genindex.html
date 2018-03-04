@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/kagtcprlib.handlers.html">kagtcprlib.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/kagtcprlib.webinterface.html">kagtcprlib.webinterface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/kagtcprlib.opt.html">kagtcprlib.opt</a></li>
 </ul>
 
@@ -166,11 +167,15 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#W"><strong>W</strong></a>
@@ -215,6 +220,10 @@
       <li><a href="_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.BaseHandler">BaseHandler (class in kagtcprlib.handlers)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.MyWebSocketServer.broadcast">broadcast() (kagtcprlib.webinterface.MyWebSocketServer method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
@@ -222,10 +231,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client">Client (class in kagtcprlib.client)</a>
 </li>
-      <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.connect">connect() (kagtcprlib.client.Client method)</a>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.close">close() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.connect">connect() (kagtcprlib.client.Client method)</a>
+</li>
       <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.connect_forever">connect_forever() (kagtcprlib.client.Client method)</a>
 </li>
       <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.connect_forever_in_thread">connect_forever_in_thread() (kagtcprlib.client.Client method)</a>
@@ -245,23 +256,71 @@
   </ul></td>
 </tr></table>
 
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_by_name">get_client_by_name() (in module kagtcprlib.webinterface)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_description">get_client_description() (in module kagtcprlib.webinterface)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.get_client_descriptions">get_client_descriptions() (in module kagtcprlib.webinterface)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.get_handler">get_handler() (kagtcprlib.client.Client method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.BaseHandler.handle">handle() (kagtcprlib.handlers.BaseHandler method)</a>
 
       <ul>
+        <li><a href="_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.PlayerCountHandler.handle">(kagtcprlib.handlers.PlayerCountHandler method)</a>
+</li>
         <li><a href="_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.RotatingFileLoggingHandler.handle">(kagtcprlib.handlers.RotatingFileLoggingHandler method)</a>
 </li>
         <li><a href="_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler.handle">(kagtcprlib.opt.kagladder.xmlrequesthandler.XMLRequestHandler method)</a>
 </li>
+        <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.WebSocketBroadcastHandler.handle">(kagtcprlib.webinterface.WebSocketBroadcastHandler method)</a>
+</li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.handle_incoming_message">handle_incoming_message() (in module kagtcprlib.webinterface)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.handleClose">handleClose() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.handleConnected">handleConnected() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.handleMessage">handleMessage() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.is_connected">is_connected() (kagtcprlib.client.Client method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.SocketMsg.json">json() (kagtcprlib.webinterface.SocketMsg method)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket">KagClientInfoSocket (class in kagtcprlib.webinterface)</a>
+</li>
       <li><a href="index.html#module-kagtcprlib">kagtcprlib (module)</a>
 </li>
       <li><a href="_autosummary/kagtcprlib.client.html#module-kagtcprlib.client">kagtcprlib.client (module)</a>
@@ -281,6 +340,8 @@
       <li><a href="_autosummary/_autosummary/_autosummary/kagtcprlib.opt.kagladder.xmlrequesthandler.html#module-kagtcprlib.opt.kagladder.xmlrequesthandler">kagtcprlib.opt.kagladder.xmlrequesthandler (module)</a>
 </li>
       <li><a href="_autosummary/kagtcprlib.utils.html#module-kagtcprlib.utils">kagtcprlib.utils (module)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#module-kagtcprlib.webinterface">kagtcprlib.webinterface (module)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -303,12 +364,24 @@
       <li><a href="_autosummary/kagtcprlib.constants.html#kagtcprlib.constants.MAX_LINE_LENGTH">MAX_LINE_LENGTH (in module kagtcprlib.constants)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.MyWebSocketServer">MyWebSocketServer (class in kagtcprlib.webinterface)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/kagtcprlib.exceptions.html#kagtcprlib.exceptions.NotConnectedException">NotConnectedException</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.handlers.html#kagtcprlib.handlers.PlayerCountHandler">PlayerCountHandler (class in kagtcprlib.handlers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -332,11 +405,29 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/kagtcprlib.client.html#kagtcprlib.client.Client.send">send() (kagtcprlib.client.Client method)</a>
 </li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.sendFragment">sendFragment() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentEnd">sendFragmentEnd() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.sendFragmentStart">sendFragmentStart() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.KagClientInfoSocket.sendMessage">sendMessage() (kagtcprlib.webinterface.KagClientInfoSocket method)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.SocketMsg">SocketMsg (class in kagtcprlib.webinterface)</a>
+</li>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.sync_clients">sync_clients() (in module kagtcprlib.webinterface)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/kagtcprlib.webinterface.html#kagtcprlib.webinterface.WebSocketBroadcastHandler">WebSocketBroadcastHandler (class in kagtcprlib.webinterface)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/kagtcprlib.exceptions.html#kagtcprlib.exceptions.NotConnectedException.with_traceback">with_traceback() (kagtcprlib.exceptions.NotConnectedException method)</a>
 </li>

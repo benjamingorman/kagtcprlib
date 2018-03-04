@@ -1,5 +1,12 @@
 """Module webinterface provides a web interface to show the status of each
 KAG server connected.
+To run it, you must provide a config .toml file containing the details of
+each server you wish to connect to.
+
+Example:
+    $ python -m kagtcprlib.webinterface example_config_file.toml
+
+Now navigate to http://localhost:8000 and you should be able to see the interface.
 """
 import argparse
 import http.server
@@ -23,13 +30,21 @@ class MyWebSocketServer(SimpleWebSocketServer):
     """Extension of SimpleWebSocketServer which allows for broadcasting a
     SocketMsg to all connected sockets.
     """
+
     def broadcast(self, msg):
+        """Broadcasts a SocketMsg to all connected websockets.
+
+        Args:
+            msg (SocketMsg): The message to send
+        """
         assert(isinstance(msg, SocketMsg))
         for (_, conn) in self.connections.items():
             conn.sendMessage(msg.json())
 
 
 class KagClientInfoSocket(WebSocket):
+    """Extension of WebSocket used to handle the connection to the browser.
+    """
 
     def handleMessage(self):
         logging.info("Received message %s", self.data)
@@ -42,11 +57,11 @@ class KagClientInfoSocket(WebSocket):
         handle_incoming_message(msg)
 
     def handleConnected(self):
-        print(self.address, "websocket connected")
+        logging.info(self.address, "websocket connected")
         self.send_clients_list()
 
     def handleClosed(self):
-        print(self.address, "websocket closed")
+        logging.info(self.address, "websocket closed")
 
     def send_clients_list(self):
         msg = SocketMsg("clients_list", get_client_descriptions())
@@ -55,19 +70,30 @@ class KagClientInfoSocket(WebSocket):
 
 class SocketMsg:
     """A message to be sent over the WebSocket to browsers.
+
+    Args:
+        type (str): The type of the message.
+            This identifies what kind of message this is, and what the data will be.
+        data (any): The message's data. This could be any type which is JSON serializable.
     """
+
     def __init__(self, type, data):
         assert(isinstance(type, str))
         self.type = type
         self.data = data
 
     def json(self):
+        """Serializes the SocketMsg as a JSON string
+
+        Returns:
+            str: The serialized SocketMsg
+        """
         msg = {"message": self.type, "data": self.data}
         return json.dumps(msg)
 
 
 class WebSocketBroadcastHandler(BaseHandler):
-    """Handler which, whenever it receives a line, will broadcast it to all
+    """This handler, whenever it receives a line, will broadcast it to all
     connected WebSockets.
     """
     def handle(self, client_nickname, timestamp, content):
@@ -77,6 +103,13 @@ class WebSocketBroadcastHandler(BaseHandler):
 
 
 def get_client_description(client):
+    """Returns useful info about the given Client.
+
+    Args:
+        client (Client): The client
+    Returns:
+        dict: The description
+    """
     desc = {"nickname": client.nickname, "host": client.host, "port": client.port,
             "connected": client.is_connected()}
     pch = client.get_handler(PlayerCountHandler)
@@ -86,10 +119,20 @@ def get_client_description(client):
 
 
 def get_client_descriptions():
+    """Returns the descriptions of each Client in CLIENT_LIST.
+
+    Returns:
+        list(dict): The descriptions
+    """
     return [get_client_description(client) for client in CLIENTS_LIST]
 
 
 def get_client_by_name(nickname):
+    """Returns the client identified by `nickname` from CLIENT_LIST.
+
+    Args:
+        nickname (str): The nickname of the client
+    """
     for client in CLIENTS_LIST:
         if client.nickname == nickname:
             return client
@@ -97,6 +140,9 @@ def get_client_by_name(nickname):
 
 
 def sync_clients():
+    """Works out whether the description of any clients has changed, and if so
+    broadcasts the change to all connected websockets.
+    """
     global CLIENTS_DESCRIPTION_HASH
     descriptions = get_client_descriptions()
     descriptions_json = json.dumps(descriptions)
@@ -117,7 +163,12 @@ def sync_clients_worker():
 
 
 def handle_incoming_message(msg):
-    """Handles an incoming SocketMsg from a client
+    """Handles an incoming SocketMsg from a client.
+    This occurs for example, when a user types a line of text into the TCPR prompt
+    in the browser.
+
+    Args:
+        msg (SocketMsg): The message received from the connection.
     """
     if msg.type == "tcpr_prompt_line":
         client_nickname = msg.data["nickname"]
@@ -160,7 +211,7 @@ if __name__ == "__main__":
     os.chdir(web_dir)
 
     # Setup WebSocket server
-    print("WebSocket server serving on {}".format(args.ws_port))
+    logging.info("WebSocket server serving on {}".format(args.ws_port))
     WEBSOCKET_SERVER = MyWebSocketServer('', args.ws_port, KagClientInfoSocket)
     ws_thread = threading.Thread(name="websocketserver", target=WEBSOCKET_SERVER.serveforever)
     ws_thread.daemon = True
@@ -174,7 +225,7 @@ if __name__ == "__main__":
     webbrowser.open("http://localhost:{}".format(args.port))
 
     # Setup main http server
-    print("Serving on {}".format(args.port))
+    logging.info("HTTP serving on {}".format(args.port))
     server_address = ('', args.port)
     httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
     httpd.serve_forever()

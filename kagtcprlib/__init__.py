@@ -12,6 +12,7 @@ Submodules
     exceptions
     handlers
     utils
+    webinterface
     opt
 """
 from .client import * # pylint: disable=wildcard-import

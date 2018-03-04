@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="kagtcprlib.exceptions.html">kagtcprlib.exceptions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">kagtcprlib.handlers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kagtcprlib.utils.html">kagtcprlib.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kagtcprlib.webinterface.html">kagtcprlib.webinterface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kagtcprlib.opt.html">kagtcprlib.opt</a></li>
 </ul>
 
@@ -183,20 +184,39 @@
 <em class="property">class </em><code class="descclassname">kagtcprlib.handlers.</code><code class="descname">BaseHandler</code><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#BaseHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class for handlers. Handlers are added to <a href="#id1"><span class="problematic" id="id2">`</span></a>Client`s and respond to lines
-of text received from KAG. The handler will only be called if the line matches it’s regex.
-By default all lines are matched.</p>
+of text received from KAG.</p>
+<dl class="method">
+<dt id="kagtcprlib.handlers.BaseHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>client_nickname</em>, <em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#BaseHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a line of text received from KAG.
+If the handler returns a string it will be sent over the connection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>regex</strong> (<em>str</em>) – A regular expression used to match lines from KAG
-(not including the timestamp). The line will only be handled if it matches the regex.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> (<em>str</em>) – The timestamp of the line</li>
+<li><strong>line</strong> (<em>str</em>) – The line received from kag</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="kagtcprlib.handlers.PlayerCountHandler">
+<em class="property">class </em><code class="descclassname">kagtcprlib.handlers.</code><code class="descname">PlayerCountHandler</code><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#PlayerCountHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.PlayerCountHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#kagtcprlib.handlers.BaseHandler" title="kagtcprlib.handlers.BaseHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">kagtcprlib.handlers.BaseHandler</span></code></a></p>
+<p>Keeps a count of the number of players on a server by looking for lines like:
+Joan of Arc (Eluded) is now spectating
+Joan of Arc (Eluded) has joined Red Team
+Player Eluded left the game (players left 0)</p>
 <dl class="method">
-<dt id="kagtcprlib.handlers.BaseHandler.handle">
-<code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#BaseHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.BaseHandler.handle" title="Permalink to this definition">¶</a></dt>
+<dt id="kagtcprlib.handlers.PlayerCountHandler.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>client_nickname</em>, <em>timestamp</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#PlayerCountHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.PlayerCountHandler.handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles a line of text received from KAG.
 If the handler returns a string it will be sent over the connection.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -235,7 +255,7 @@ Uses <cite>RotatingFileHandler</cite> internally.</p>
 </table>
 <dl class="method">
 <dt id="kagtcprlib.handlers.RotatingFileLoggingHandler.handle">
-<code class="descname">handle</code><span class="sig-paren">(</span><em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#RotatingFileLoggingHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.RotatingFileLoggingHandler.handle" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle</code><span class="sig-paren">(</span><em>client_nickname</em>, <em>timestamp</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kagtcprlib/handlers.html#RotatingFileLoggingHandler.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kagtcprlib.handlers.RotatingFileLoggingHandler.handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles a line of text received from KAG.
 If the handler returns a string it will be sent over the connection.</p>
 <table class="docutils field-list" frame="void" rules="none">
