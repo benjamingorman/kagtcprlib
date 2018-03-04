@@ -38,6 +38,7 @@ class Client:
         self.host = host
         self.port = port
         self.rcon_password = rcon_password
+        self._is_connected = False
         self._log = logging.getLogger(name=self.nickname)
         self._sock = None
         self._handlers = []
@@ -64,10 +65,11 @@ class Client:
             # TODO: Detect if the password was wrong and raise an exception
             self._log.debug("Authenticated.")
 
+            self._is_connected = True
             self._log.info("Listening...")
             # This will loop endlessly as long as the socket is open
             for line in sock.makefile('r', encoding='utf-8'):
-                self._log.debug("Received: %s", line)
+                self._log.debug("Received: %s", line.rstrip())
                 # Detect server shutdown
                 if re.match(r"^\d\d:\d\d:\d\dTCPR: server shutting down", line):
                     break
@@ -84,6 +86,7 @@ class Client:
 
         # Null the socket reference to indicate the client is not connected
         self._sock = None
+        self._is_connected = False
 
     def send(self, text):
         """Sends a line of text (probably angelscript code) to KAG.
@@ -110,6 +113,25 @@ class Client:
         assert(isinstance(handler, handlers.BaseHandler))
         self._handlers.append(handler)
 
+    def get_handler(self, handler_type):
+        """Returns the first handler of the given type.
+
+        Args:
+            handler_type (type): The class of the handler
+        """
+        for handler in self._handlers:
+            if isinstance(handler, handler_type):
+                return handler
+        return None
+
+    def is_connected(self):
+        """Returns True/False whether the client is connected.
+
+        Returns:
+            bool: Connected status
+        """
+        return self._is_connected
+
     def connect_forever(self):
         """Forever calls the client's connect method.
         """
@@ -119,7 +141,7 @@ class Client:
             except KeyboardInterrupt:
                 # Handle ctrl-c gracefully
                 return
-            except Exception as err: # pylint: disable=broad-except
+            except Exception as err:  # pylint: disable=broad-except
                 # Catch every exception cause this needs to be bullet-proof
                 self._log.error(err, exc_info=True)
             time.sleep(1)
@@ -166,10 +188,9 @@ class Client:
         timestamp, content = self._split_line(line)
         msgs_to_send = []
         for handler in self._handlers:
-            if re.match(handler.regex, content):
-                msg = handler.handle(timestamp, content)
-                if msg:
-                    msgs_to_send.append(msg)
+            msg = handler.handle(self.nickname, timestamp, content)
+            if msg:
+                msgs_to_send.append(msg)
         return msgs_to_send
 
 

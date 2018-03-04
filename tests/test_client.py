@@ -6,13 +6,10 @@ import kagtcprlib.handlers as handlers
 
 
 class CountingHandler(handlers.BaseHandler):
-    regex = r"test\d\d\d"
-
     def __init__(self):
-        super(handlers.BaseHandler, self).__init__()
         self.linesHandled = 0
 
-    def handle(self, timestamp, content):
+    def handle(self, client_nickname, timestamp, content):
         self.linesHandled += 1
         return "foo"
 
@@ -35,8 +32,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(handler.linesHandled, 1)
         self.assertEqual(len(msgs), 1)
         self.assertEqual(msgs[0], "foo")
-
-        # It shouldn't handle if the regex doesn't match
-        handler.regex = "x"
-        self.client._handle_line(example_line)
-        self.assertEqual(handler.linesHandled, 1)

@@ -82,7 +82,7 @@ class XMLRequestHandler(handlers.BaseHandler):
         self._multiline_content = []
         self._log = logging.getLogger(name="XMLRequestHandler")
 
-    def handle(self, timestamp, content):
+    def handle(self, client_nickname, timestamp, content):
         """Handle incoming lines, dealing with <multiline> tags.
         """
         # When we see an opening <multiline> tag, start recording all lines seen
@@ -101,7 +101,7 @@ class XMLRequestHandler(handlers.BaseHandler):
             self._in_multiline = False
             timestamp = self._multiline_timestamp
             content = "".join(self._multiline_content)
-            return self._handle_line(timestamp, content)
+            return self._handle_line(client_nickname, timestamp, content)
         elif self._in_multiline:
             if len(self._multiline_content) > MULTILINE_MAX_LINES:
                 # Avoid potential memory leak due to KAG sending invalid pairs of <multiline> tags
@@ -111,7 +111,7 @@ class XMLRequestHandler(handlers.BaseHandler):
             else:
                 self._multiline_content.append(content)
         elif re.match("^<request>.*</request>$", content):
-            return self._handle_line(timestamp, content)
+            return self._handle_line(client_nickname, timestamp, content)
         return None
 
     def add_method_handler(self, method_name, method_handler):
@@ -126,14 +126,15 @@ class XMLRequestHandler(handlers.BaseHandler):
         assert(isinstance(method_handler, types.FunctionType))
         self._method_handlers.append((method_name, method_handler))
 
-    def _handle_line(self, timestamp, content):
+    def _handle_line(self, client_nickname, timestamp, content):
         """Handles a received line (could be from a multi-line block)
 
         Args:
+            client_nickname (str): The nickname of the client which received the line
             timestamp (str): The timestamp of the line
             content (str): The content of the line
         """
-        req = self._parse_request(timestamp, content)
+        req = self._parse_request(client_nickname, timestamp, content)
         if req:
             self._log.debug("parsed request")
             response = self._handle_request(req)
@@ -150,19 +151,19 @@ class XMLRequestHandler(handlers.BaseHandler):
             return format_angelscript_response(req.req_id, response, status)
         return None
 
-    def _parse_request(self, timestamp, content):
+    def _parse_request(self, client_nickname, timestamp, content):
         """Attempts to parse a serialized request sent from KAG.
 
         Args:
+            client_nickname (str): The nickname of the client which received the line
+            timestamp (str): The timestamp of the line
             content (str): The content of the request
 
         Returns:
             Request: The parsed request
         """
         try:
-            # TODO: client nickname is not passed as a parameter to `handle` yet
-            # How can we get it here?
-            req = Request.from_xml("TODO", timestamp, content)
+            req = Request.from_xml(client_nickname, timestamp, content)
             return req
         except (ValueError, xml.parsers.expat.ExpatError):
             self._log.error("Invalid request xml %s", content)

@@ -31,7 +31,7 @@ class TestXMLRequestHandler(unittest.TestCase):
         example_line = "<request><method>ping</method><id>1</id><params></params></request>"
         self.handler.add_method_handler("ping", ping_method_handler)
 
-        msg = self.handler._handle_line("[00:00:00]", example_line)
+        msg = self.handler._handle_line("test", "[00:00:00]", example_line)
 
         self.assertEqual(msg, kagladder.format_angelscript_response(1, 'pong', 2))
 
@@ -41,9 +41,9 @@ class TestXMLRequestHandler(unittest.TestCase):
                  "</multiline>"
                  ]
         self.handler.add_method_handler("ping", ping_method_handler)
-        x = self.handler.handle("[12:34:56]", lines[0])
+        x = self.handler.handle("test", "[12:34:56]", lines[0])
         self.assertIsNone(x)
-        x = self.handler.handle("[12:34:57]", lines[1])
+        x = self.handler.handle("test", "[12:34:57]", lines[1])
         self.assertIsNone(x)
-        msg = self.handler.handle("[12:34:57]", lines[2])
+        msg = self.handler.handle("test", "[12:34:57]", lines[2])
         self.assertEqual(msg, kagladder.format_angelscript_response(1, 'pong', 2))
