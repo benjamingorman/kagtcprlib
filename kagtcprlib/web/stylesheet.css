@@ -1,0 +1,9 @@
+.tcpr-console {
+    padding: 3px;
+    background: black;
+    color: white;
+    font-size: 0.8em;
+    min-height: 50px;
+    height: 300px;
+    overflow-y: scroll;
+}
