@@ -8,5 +8,5 @@ setup(name='kagtcprlib',
       author='Benjamin Gorman',
       author_email='8076bgorman@gmail.com',
       url='https://github.com/benjamingorman/kagtcprlib',
-      packages=['kagtcprlib'],
+      packages=['kagtcprlib', 'kagtcprlib.opt.kagladder'],
      )
