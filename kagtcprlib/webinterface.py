@@ -57,11 +57,11 @@ class KagClientInfoSocket(WebSocket):
         handle_incoming_message(msg)
 
     def handleConnected(self):
-        logging.info(self.address, "websocket connected")
+        logging.info("%s %s", self.address, "websocket connected")
         self.send_clients_list()
 
     def handleClosed(self):
-        logging.info(self.address, "websocket closed")
+        logging.info("%s %s", self.address, "websocket closed")
 
     def send_clients_list(self):
         msg = SocketMsg("clients_list", get_client_descriptions())
@@ -183,22 +183,16 @@ def handle_incoming_message(msg):
             client.send(line)
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("config_file", help="Path to the clients config file")
-    parser.add_argument("--port", help="Which port to run on", default=8000)
-    parser.add_argument("--dev", help="Whether to enable dev mode", action='store_true')
-    parser.add_argument("--ws-port", help="Which port should the WebSocket server run on",
-                        default=8001)
-    args = parser.parse_args()
-
+def run(config_file, port=8000, verbose=False, ws_port=8001):
     log_level = logging.INFO
-    if args.dev:
+    if verbose:
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level)
 
-    assert(os.path.isfile(args.config_file))
-    CLIENTS_LIST = load_clients_from_config_file(args.config_file)
+    assert(os.path.isfile(config_file))
+    global CLIENTS_LIST
+    CLIENTS_LIST = load_clients_from_config_file(config_file)
+    logging.info("Clients: %s", [client for client in CLIENTS_LIST])
 
     bch = WebSocketBroadcastHandler()
     for client in CLIENTS_LIST:
@@ -211,8 +205,9 @@ if __name__ == "__main__":
     os.chdir(web_dir)
 
     # Setup WebSocket server
-    logging.info("WebSocket server serving on {}".format(args.ws_port))
-    WEBSOCKET_SERVER = MyWebSocketServer('', args.ws_port, KagClientInfoSocket)
+    logging.info("WebSocket server serving on {}".format(ws_port))
+    global WEBSOCKET_SERVER
+    WEBSOCKET_SERVER = MyWebSocketServer('', ws_port, KagClientInfoSocket)
     ws_thread = threading.Thread(name="websocketserver", target=WEBSOCKET_SERVER.serveforever)
     ws_thread.daemon = True
     ws_thread.start()
@@ -222,10 +217,26 @@ if __name__ == "__main__":
     syncer_thread.daemon = True
     syncer_thread.start()
 
-    webbrowser.open("http://localhost:{}".format(args.port))
+    webbrowser.open("http://localhost:{}".format(port))
 
     # Setup main http server
-    logging.info("HTTP serving on {}".format(args.port))
-    server_address = ('', args.port)
+    logging.info("HTTP serving on {}".format(port))
+    server_address = ('', port)
     httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
     httpd.serve_forever()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("config_file", help="Path to the clients config file")
+    parser.add_argument("--port", help="Which port to run on", default=8000)
+    parser.add_argument("-v", "--verbose", help="Whether to enable verbose logging", action='store_true', default=False)
+    parser.add_argument("--ws-port", help="Which port should the WebSocket server run on",
+                        default=8001)
+    args = parser.parse_args()
+
+    run(args.config_file, port=args.port, verbose=args.verbose, ws_port=args.ws_port)
+
+
+if __name__ == "__main__":
+    main()

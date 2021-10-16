@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
-setup(name='kagtcprlib',
-      version='0.2',
+setup(
+      name='kagtcprlib',
+      version='0.2.1',
       description="TCPR library for King Arthur's Gold",
+      long_description=open("README.md").read(),
       author='Benjamin Gorman',
       author_email='8076bgorman@gmail.com',
       url='https://github.com/benjamingorman/kagtcprlib',
-      packages=['kagtcprlib', 'kagtcprlib.opt.kagladder'],
-     )
+      classifiers=[
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 3',
+      ],
+      packages=find_packages(),
+      include_package_data=True,
+      package_dir={'kagtcprlib': 'kagtcprlib'},
+      package_data={'': ['web/*']},
+)

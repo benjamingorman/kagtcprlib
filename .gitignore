@@ -1,3 +1,5 @@
 *.pyc
 *__pycache__*
 docs_src/_*
+build/
+dist/
