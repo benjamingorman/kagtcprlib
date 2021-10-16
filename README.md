@@ -5,6 +5,8 @@ A TCPR library for King Arthur's Gold, aiming to provide a simple solution for w
 
 * Supports async connections to multiple KAG servers.
 
+`kagtcprlib` is available from PyPi. To install: `pip install kagtcprlib`
+
 The basic design of the library is that the user creates a `Client` instance:
 
 ```python
