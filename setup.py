@@ -17,5 +17,5 @@ setup(
       packages=find_packages(exclude=("tests",)),
       include_package_data=True,
       package_dir={'kagtcprlib': 'kagtcprlib'},
-      package_data={'': ['web/*']},
+      package_data={'': ['web/**/*',]},
 )

@@ -192,7 +192,7 @@ def run(config_file, port=8000, verbose=False, ws_port=8001):
     assert(os.path.isfile(config_file))
     global CLIENTS_LIST
     CLIENTS_LIST = load_clients_from_config_file(config_file)
-    logging.info("Clients: %s", [client for client in CLIENTS_LIST])
+    logging.info("Clients: %s", [client.nickname for client in CLIENTS_LIST])
 
     bch = WebSocketBroadcastHandler()
     for client in CLIENTS_LIST:
